@@ -1,0 +1,20 @@
+﻿using Radical.ComponentModel;
+using Radical.Reflection;
+using Radical.Avalonia.ComponentModel;
+using System;
+
+namespace Radical.Avalonia.CommandBuilders
+{
+    public class CommandData
+    {
+        public string MethodName { get; set; }
+        public object DataContext { get; set; }
+        public LateBoundVoidMethod FastDelegate { get; set; }
+        public BooleanFact BooleanFact { get; set; }
+        public bool HasParameter { get; set; }
+        public Type ParameterType { get; set; }
+        public KeyBindingAttribute[] KeyBindings { get; set; }
+        public CommandDescriptionAttribute Description { get; set; }
+        public IMonitor Monitor { get; set; }
+    }
+}
