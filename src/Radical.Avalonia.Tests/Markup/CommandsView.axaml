@@ -1,0 +1,18 @@
+﻿<Window x:Class="Radical.Avalonia.Tests.Markup.CommandsView"
+        xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mk="using:Radical.Avalonia.Markup"
+        xmlns:i="using:Avalonia.Xaml.Interactivity"
+        xmlns:local="using:Radical.Avalonia.Tests.Markup">
+    <StackPanel>
+        <Button x:Name="AutoButton" Command="{mk:AutoCommandBinding Path=Save}" CommandParameter="42" />
+        <Button x:Name="BoundButton" Command="{mk:CommandBinding Path=RefreshCommand}" />
+        <Button x:Name="BehaviorHost">
+            <i:Interaction.Behaviors>
+                <local:TestCommandBehavior Command="{mk:BehaviorAutoCommandBinding Path=Save}" />
+                <local:TestCommandBehavior Command="{mk:BehaviorCommandBinding Path=SaveCommand}" />
+            </i:Interaction.Behaviors>
+        </Button>
+        <TextBox x:Name="Editor" Text="{mk:EditorBinding Path=Name}" />
+    </StackPanel>
+</Window>
