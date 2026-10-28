@@ -1,0 +1,821 @@
+﻿[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("Radical.Avalonia.Tests")]
+namespace Avalonia
+{
+    public static class ApplicationExtensions
+    {
+        public static Radical.Avalonia.RadicalApplication AddRadicalApplication(this Avalonia.Application application, System.Action<Radical.Avalonia.Bootstrap.BootstrapConfiguration> configure) { }
+        public static Radical.Avalonia.RadicalApplication AddRadicalApplication(this Avalonia.Application application, System.Type shellViewType, System.Action<Radical.Avalonia.Bootstrap.BootstrapConfiguration> configure) { }
+        public static Radical.Avalonia.RadicalApplication AddRadicalApplication<TShellView>(this Avalonia.Application application)
+            where TShellView : Avalonia.Controls.Window { }
+        public static Radical.Avalonia.RadicalApplication AddRadicalApplication<TShellView>(this Avalonia.Application application, System.Action<Radical.Avalonia.Bootstrap.BootstrapConfiguration> configure)
+            where TShellView : Avalonia.Controls.Window { }
+    }
+}
+namespace Microsoft.Extensions.Hosting
+{
+    public static class HostBuilderExtensions
+    {
+        public static Microsoft.Extensions.Hosting.IHostBuilder AddRadicalApplication(this Microsoft.Extensions.Hosting.IHostBuilder hostBuilder, System.Action<Radical.Avalonia.Bootstrap.BootstrapConfiguration> configure) { }
+        public static Microsoft.Extensions.Hosting.IHostBuilder AddRadicalApplication(this Microsoft.Extensions.Hosting.IHostBuilder hostBuilder, System.Type shellType, System.Action<Radical.Avalonia.Bootstrap.BootstrapConfiguration> configure) { }
+        public static Microsoft.Extensions.Hosting.IHostBuilder AddRadicalApplication<TShellView>(this Microsoft.Extensions.Hosting.IHostBuilder hostBuilder)
+            where TShellView : Avalonia.Controls.Window { }
+        public static Microsoft.Extensions.Hosting.IHostBuilder AddRadicalApplication<TShellView>(this Microsoft.Extensions.Hosting.IHostBuilder hostBuilder, System.Action<Radical.Avalonia.Bootstrap.BootstrapConfiguration> configure)
+            where TShellView : Avalonia.Controls.Window { }
+    }
+}
+namespace Radical.Avalonia.Behaviors
+{
+    public class DependencyObjectCloseHandlerBehavior : Avalonia.Xaml.Interactivity.Behavior<Avalonia.AvaloniaObject>
+    {
+        public DependencyObjectCloseHandlerBehavior(Radical.ComponentModel.Messaging.IMessageBroker broker, Radical.Avalonia.ComponentModel.IConventionsHandler conventions) { }
+        protected override void OnAttached() { }
+        protected override void OnDetaching() { }
+    }
+    public static class DesignTimeHelper
+    {
+        public static bool GetIsInDesignMode() { }
+    }
+    public class FrameworkElementLifecycleNotificationsBehavior : Radical.Avalonia.Behaviors.RadicalBehavior<Avalonia.Controls.Control>
+    {
+        public FrameworkElementLifecycleNotificationsBehavior(Radical.ComponentModel.Messaging.IMessageBroker broker, Radical.Avalonia.ComponentModel.IConventionsHandler conventions) { }
+        protected override void OnAttached() { }
+        protected override void OnDetaching() { }
+    }
+    public interface INotifyAttachedOjectLoaded
+    {
+        event System.EventHandler AttachedObjectLoaded;
+        T GetAttachedObject<T>()
+            where T : Avalonia.Controls.Control;
+    }
+    public abstract class RadicalBehavior<T> : Avalonia.Xaml.Interactivity.Behavior<T>, Radical.Avalonia.Behaviors.INotifyAttachedOjectLoaded
+        where T : Avalonia.Controls.Control
+    {
+        protected RadicalBehavior() { }
+        public event System.EventHandler AttachedObjectLoaded;
+        public T GetAttachedObject<T>()
+            where T : Avalonia.Controls.Control { }
+        protected virtual void OnAttachedObjectLoaded() { }
+        protected override void OnLoaded() { }
+    }
+    public class WindowLifecycleNotificationsBehavior : Radical.Avalonia.Behaviors.RadicalBehavior<Avalonia.Controls.Window>
+    {
+        public WindowLifecycleNotificationsBehavior(Radical.ComponentModel.Messaging.IMessageBroker broker, Radical.Avalonia.ComponentModel.IConventionsHandler conventions) { }
+        protected override void OnAttached() { }
+        protected override void OnDetaching() { }
+    }
+}
+namespace Radical.Avalonia.Bootstrap
+{
+    public enum ApplicationShutdownReason
+    {
+        UserRequest = 0,
+        MultipleInstanceNotAllowed = 1,
+        SessionEnding = 2,
+        ApplicationRequest = 3,
+    }
+    public class ApplicationShuttingDownArgs
+    {
+        public ApplicationShuttingDownArgs() { }
+        public bool IsBootCompleted { get; }
+        public Radical.Avalonia.Bootstrap.ApplicationShutdownReason Reason { get; }
+    }
+    public class AssemblyScanner
+    {
+        public System.IO.SearchOption DirectorySearchOptions { get; set; }
+        public void AddAssemblyFilter(System.Func<string, Radical.Avalonia.Bootstrap.AssemblyScanner.FilterResults> filter) { }
+        public enum FilterResults
+        {
+            Exclude = 0,
+            Include = 1,
+        }
+    }
+    public class BootstrapConfiguration
+    {
+        public Radical.Avalonia.Bootstrap.AssemblyScanner AssemblyScanner { get; }
+        public Radical.Avalonia.Bootstrap.BootstrapConventions BootstrapConventions { get; }
+        public void ConfigureServices(System.Action<Microsoft.Extensions.DependencyInjection.IServiceCollection> services) { }
+        public void DisableAutoBoot() { }
+        public void ExposeServiceAsResource<TService>() { }
+        public void ExposeServiceAsResource<TService, TView>()
+            where TView : Avalonia.Controls.Control { }
+        public void OnBootCompleted(System.Action<System.IServiceProvider> bootCompletedHandler) { }
+        public void OnBooting(System.Action<System.IServiceProvider> bootingHandler) { }
+        public void OnServiceProviderCreated(System.Action<System.IServiceProvider> onServiceProviderCreatedHandler) { }
+        public void OnShuttingDown(System.Action<Radical.Avalonia.Bootstrap.ApplicationShuttingDownArgs> shutingDownHandler) { }
+        public void OnSingletonApplicationStartup(System.Action<Radical.Avalonia.Bootstrap.SingletonApplicationStartupArgs> onSingletonApplicationStartup) { }
+        public void OnUnhandledException(System.Action<System.Exception> unhandledExceptionHandler) { }
+        public void OverrideShutdownMode(Avalonia.Controls.ShutdownMode shutdownMode) { }
+        public void RegisterAsGlobalSingleton(string registrationKey) { }
+        public void RegisterAsLocalSingleton(string registrationKey) { }
+        public void UseAsShell(System.Type shellViewType) { }
+        public void UseAsShell<TShellType>()
+            where TShellType : Avalonia.Controls.Window { }
+        public void UseCulture(System.Func<System.IServiceProvider, System.Globalization.CultureInfo> cultureConfig) { }
+        public void UseUICulture(System.Func<System.IServiceProvider, System.Globalization.CultureInfo> uiCultureConfig) { }
+    }
+    public class BootstrapConventions
+    {
+        public BootstrapConventions() { }
+        [Radical.Avalonia.ComponentModel.IgnorePropertyInjectionAttribue]
+        public System.Func<System.Reflection.Assembly, System.Collections.Generic.IEnumerable<string>> AssemblyFileScanPatterns { get; set; }
+        [Radical.Avalonia.ComponentModel.IgnorePropertyInjectionAttribue]
+        public System.Func<System.Reflection.Assembly, System.Collections.Generic.IEnumerable<string>> DefaultAssemblyFileScanPatterns { get; }
+        [Radical.Avalonia.ComponentModel.IgnorePropertyInjectionAttribue]
+        public System.Func<System.Type, string> DefaultGetInterestedRegionNameIfAny { get; }
+        [Radical.Avalonia.ComponentModel.IgnorePropertyInjectionAttribue]
+        public System.Func<System.Reflection.PropertyInfo, bool> DefaultIgnorePropertyInjection { get; }
+        [Radical.Avalonia.ComponentModel.IgnorePropertyInjectionAttribue]
+        public System.Func<System.Reflection.PropertyInfo, bool> DefaultIgnoreViewModelPropertyInjection { get; }
+        [Radical.Avalonia.ComponentModel.IgnorePropertyInjectionAttribue]
+        public System.Func<System.Reflection.PropertyInfo, bool> DefaultIgnoreViewPropertyInjection { get; }
+        [Radical.Avalonia.ComponentModel.IgnorePropertyInjectionAttribue]
+        public System.Predicate<System.Reflection.Assembly> DefaultIncludeAssemblyInContainerScan { get; }
+        [Radical.Avalonia.ComponentModel.IgnorePropertyInjectionAttribue]
+        public System.Predicate<System.Type> DefaultIsConcreteType { get; }
+        [Radical.Avalonia.ComponentModel.IgnorePropertyInjectionAttribue]
+        public System.Func<System.Type, bool> DefaultIsExcluded { get; }
+        [Radical.Avalonia.ComponentModel.IgnorePropertyInjectionAttribue]
+        public System.Predicate<System.Type> DefaultIsMessageHandler { get; }
+        [Radical.Avalonia.ComponentModel.IgnorePropertyInjectionAttribue]
+        public System.Predicate<System.Type> DefaultIsService { get; }
+        [Radical.Avalonia.ComponentModel.IgnorePropertyInjectionAttribue]
+        public System.Func<System.Collections.Generic.IEnumerable<System.Type>, System.Type, bool> DefaultIsShellView { get; }
+        [Radical.Avalonia.ComponentModel.IgnorePropertyInjectionAttribue]
+        public System.Func<System.Collections.Generic.IEnumerable<System.Type>, System.Type, bool> DefaultIsShellViewModel { get; }
+        [Radical.Avalonia.ComponentModel.IgnorePropertyInjectionAttribue]
+        public System.Predicate<System.Type> DefaultIsView { get; }
+        [Radical.Avalonia.ComponentModel.IgnorePropertyInjectionAttribue]
+        public System.Predicate<System.Type> DefaultIsViewModel { get; }
+        [Radical.Avalonia.ComponentModel.IgnorePropertyInjectionAttribue]
+        public System.Func<System.Type, System.Collections.Generic.IEnumerable<System.Type>> DefaultSelectMessageHandlerContracts { get; }
+        [Radical.Avalonia.ComponentModel.IgnorePropertyInjectionAttribue]
+        public System.Func<System.Type, System.Collections.Generic.IEnumerable<System.Type>> DefaultSelectServiceContracts { get; }
+        [Radical.Avalonia.ComponentModel.IgnorePropertyInjectionAttribue]
+        public System.Func<System.Type, System.Collections.Generic.IEnumerable<System.Type>> DefaultSelectViewContracts { get; }
+        [Radical.Avalonia.ComponentModel.IgnorePropertyInjectionAttribue]
+        public System.Func<System.Type, System.Collections.Generic.IEnumerable<System.Type>> DefaultSelectViewModelContracts { get; }
+        [Radical.Avalonia.ComponentModel.IgnorePropertyInjectionAttribue]
+        public System.Func<System.Type, string> GetInterestedRegionNameIfAny { get; set; }
+        [Radical.Avalonia.ComponentModel.IgnorePropertyInjectionAttribue]
+        public System.Func<System.Reflection.PropertyInfo, bool> IgnorePropertyInjection { get; set; }
+        [Radical.Avalonia.ComponentModel.IgnorePropertyInjectionAttribue]
+        public System.Func<System.Reflection.PropertyInfo, bool> IgnoreViewModelPropertyInjection { get; set; }
+        [Radical.Avalonia.ComponentModel.IgnorePropertyInjectionAttribue]
+        public System.Func<System.Reflection.PropertyInfo, bool> IgnoreViewPropertyInjection { get; set; }
+        [Radical.Avalonia.ComponentModel.IgnorePropertyInjectionAttribue]
+        public System.Predicate<System.Reflection.Assembly> IncludeAssemblyInContainerScan { get; set; }
+        [Radical.Avalonia.ComponentModel.IgnorePropertyInjectionAttribue]
+        public System.Predicate<System.Type> IsConcreteType { get; set; }
+        [Radical.Avalonia.ComponentModel.IgnorePropertyInjectionAttribue]
+        public System.Func<System.Type, bool> IsExcluded { get; set; }
+        [Radical.Avalonia.ComponentModel.IgnorePropertyInjectionAttribue]
+        public System.Predicate<System.Type> IsMessageHandler { get; set; }
+        [Radical.Avalonia.ComponentModel.IgnorePropertyInjectionAttribue]
+        public System.Predicate<System.Type> IsService { get; set; }
+        [Radical.Avalonia.ComponentModel.IgnorePropertyInjectionAttribue]
+        public System.Func<System.Collections.Generic.IEnumerable<System.Type>, System.Type, bool> IsShellView { get; set; }
+        [Radical.Avalonia.ComponentModel.IgnorePropertyInjectionAttribue]
+        public System.Func<System.Collections.Generic.IEnumerable<System.Type>, System.Type, bool> IsShellViewModel { get; set; }
+        [Radical.Avalonia.ComponentModel.IgnorePropertyInjectionAttribue]
+        public System.Predicate<System.Type> IsView { get; set; }
+        [Radical.Avalonia.ComponentModel.IgnorePropertyInjectionAttribue]
+        public System.Predicate<System.Type> IsViewModel { get; set; }
+        [Radical.Avalonia.ComponentModel.IgnorePropertyInjectionAttribue]
+        public System.Func<System.Type, System.Collections.Generic.IEnumerable<System.Type>> SelectMessageHandlerContracts { get; set; }
+        [Radical.Avalonia.ComponentModel.IgnorePropertyInjectionAttribue]
+        public System.Func<System.Type, System.Collections.Generic.IEnumerable<System.Type>> SelectServiceContracts { get; set; }
+        [Radical.Avalonia.ComponentModel.IgnorePropertyInjectionAttribue]
+        public System.Func<System.Type, System.Collections.Generic.IEnumerable<System.Type>> SelectViewContracts { get; set; }
+        [Radical.Avalonia.ComponentModel.IgnorePropertyInjectionAttribue]
+        public System.Func<System.Type, System.Collections.Generic.IEnumerable<System.Type>> SelectViewModelContracts { get; set; }
+    }
+    [System.AttributeUsage(System.AttributeTargets.Class)]
+    public class DisableAutomaticRegistrationAttribute : System.Attribute
+    {
+        public DisableAutomaticRegistrationAttribute() { }
+    }
+    public interface IDependenciesInstaller
+    {
+        void Install(Radical.Avalonia.Bootstrap.BootstrapConventions conventions, Microsoft.Extensions.DependencyInjection.IServiceCollection services, System.Collections.Generic.IEnumerable<System.Type> assemblyScanningResults);
+    }
+    [Radical.Avalonia.ComponentModel.ToolkitComponent]
+    public interface IExpectBootCallback
+    {
+        void OnBootCompleted();
+    }
+    [Radical.Avalonia.ComponentModel.ToolkitComponent]
+    public interface IExpectShutdownCallback
+    {
+        void OnShutdown(Radical.Avalonia.Bootstrap.ApplicationShutdownReason reason);
+    }
+    public enum SingletonApplicationScope
+    {
+        NotSupported = 0,
+        Global = 1,
+        Local = 2,
+    }
+    public class SingletonApplicationStartupArgs
+    {
+        public SingletonApplicationStartupArgs(Radical.Avalonia.Bootstrap.SingletonApplicationScope scope, string singletonRegistrationKey) { }
+        public bool AllowStartup { get; set; }
+        public Radical.Avalonia.Bootstrap.SingletonApplicationScope Scope { get; }
+        public string SingletonRegistrationKey { get; }
+    }
+}
+namespace Radical.Avalonia.ComponentModel
+{
+    public class ActiveContentChangedEventArgs : System.EventArgs
+    {
+        public ActiveContentChangedEventArgs(Avalonia.AvaloniaObject activeContent, Avalonia.AvaloniaObject previousActiveContent) { }
+        public Avalonia.AvaloniaObject ActiveContent { get; }
+        public bool HasActiveContent { get; }
+        public Avalonia.AvaloniaObject PreviousActiveContent { get; }
+    }
+    [System.AttributeUsage(System.AttributeTargets.Class, Inherited=false)]
+    public class ExposeViewModelAsStaticResourceAttribute : System.Attribute
+    {
+        public ExposeViewModelAsStaticResourceAttribute() { }
+    }
+    public interface IContentRegion : Radical.Avalonia.ComponentModel.IRegion
+    {
+        Avalonia.AvaloniaObject Content { get; set; }
+    }
+    public interface IConventionsHandler
+    {
+        [Radical.Avalonia.ComponentModel.IgnorePropertyInjectionAttribue]
+        System.Action<Avalonia.AvaloniaObject> AttachViewBehaviors { get; set; }
+        [Radical.Avalonia.ComponentModel.IgnorePropertyInjectionAttribue]
+        System.Action<Avalonia.AvaloniaObject, object> AttachViewToViewModel { get; set; }
+        [Radical.Avalonia.ComponentModel.IgnorePropertyInjectionAttribue]
+        System.Action<Avalonia.AvaloniaObject> DefaultAttachViewBehaviors { get; }
+        [Radical.Avalonia.ComponentModel.IgnorePropertyInjectionAttribue]
+        System.Action<Avalonia.AvaloniaObject, object> DefaultAttachViewToViewModel { get; }
+        [Radical.Avalonia.ComponentModel.IgnorePropertyInjectionAttribue]
+        System.Action<Avalonia.AvaloniaObject> DefaultDetachViewBehaviors { get; }
+        [Radical.Avalonia.ComponentModel.IgnorePropertyInjectionAttribue]
+        System.Action<Avalonia.AvaloniaObject, object> DefaultExposeViewModelAsStaticResource { get; }
+        [Radical.Avalonia.ComponentModel.IgnorePropertyInjectionAttribue]
+        System.Func<object, Avalonia.Controls.Window> DefaultFindHostingWindowOf { get; }
+        [Radical.Avalonia.ComponentModel.IgnorePropertyInjectionAttribue]
+        System.Func<Avalonia.AvaloniaObject, Avalonia.Controls.Window> DefaultFindWindowOf { get; }
+        [Radical.Avalonia.ComponentModel.IgnorePropertyInjectionAttribue]
+        System.Func<System.Type, object> DefaultGenerateServiceStaticResourceKey { get; }
+        [Radical.Avalonia.ComponentModel.IgnorePropertyInjectionAttribue]
+        System.Func<object, string> DefaultGenerateViewModelStaticResourceKey { get; }
+        [Radical.Avalonia.ComponentModel.IgnorePropertyInjectionAttribue]
+        System.Func<Avalonia.AvaloniaObject, Radical.Avalonia.ComponentModel.ViewDataContextSearchBehavior, object> DefaultGetViewDataContext { get; }
+        [Radical.Avalonia.ComponentModel.IgnorePropertyInjectionAttribue]
+        System.Func<object, Avalonia.AvaloniaObject> DefaultGetViewOfViewModel { get; }
+        [Radical.Avalonia.ComponentModel.IgnorePropertyInjectionAttribue]
+        System.Func<Avalonia.Controls.Control, bool> DefaultIsHostingView { get; }
+        [Radical.Avalonia.ComponentModel.IgnorePropertyInjectionAttribue]
+        System.Func<System.Type, System.Type> DefaultResolveViewModelType { get; }
+        [Radical.Avalonia.ComponentModel.IgnorePropertyInjectionAttribue]
+        System.Func<System.Type, System.Type> DefaultResolveViewType { get; }
+        [Radical.Avalonia.ComponentModel.IgnorePropertyInjectionAttribue]
+        System.Action<Avalonia.AvaloniaObject, object> DefaultSetViewDataContext { get; }
+        [Radical.Avalonia.ComponentModel.IgnorePropertyInjectionAttribue]
+        System.Func<Avalonia.AvaloniaObject, object, bool> DefaultShouldExposeViewModelAsStaticResource { get; }
+        [Radical.Avalonia.ComponentModel.IgnorePropertyInjectionAttribue]
+        System.Func<Avalonia.AvaloniaObject, bool> DefaultShouldNotifyViewLoaded { get; }
+        [Radical.Avalonia.ComponentModel.IgnorePropertyInjectionAttribue]
+        System.Func<Avalonia.AvaloniaObject, object, bool> DefaultShouldNotifyViewModelLoaded { get; }
+        [Radical.Avalonia.ComponentModel.IgnorePropertyInjectionAttribue]
+        System.Func<Avalonia.AvaloniaObject, bool> DefaultShouldReleaseView { get; }
+        [Radical.Avalonia.ComponentModel.IgnorePropertyInjectionAttribue]
+        System.Func<Avalonia.AvaloniaObject, bool> DefaultShouldUnregisterRegionManagerOfView { get; }
+        [Radical.Avalonia.ComponentModel.IgnorePropertyInjectionAttribue]
+        System.Func<Avalonia.AvaloniaObject, bool> DefaultShouldUnsubscribeViewModelOnRelease { get; }
+        [Radical.Avalonia.ComponentModel.IgnorePropertyInjectionAttribue]
+        System.Func<Avalonia.AvaloniaObject, System.Action<Avalonia.AvaloniaObject>, Avalonia.AvaloniaObject> DefaultTryHookClosedEventOfHostOf { get; }
+        [Radical.Avalonia.ComponentModel.IgnorePropertyInjectionAttribue]
+        Radical.Avalonia.ComponentModel.ViewDataContextSearchBehavior DefaultViewDataContextSearchBehavior { get; set; }
+        [Radical.Avalonia.ComponentModel.IgnorePropertyInjectionAttribue]
+        System.Func<Avalonia.AvaloniaObject, Radical.Avalonia.ComponentModel.ViewDataContextSearchBehavior, bool> DefaultViewHasDataContext { get; }
+        [Radical.Avalonia.ComponentModel.IgnorePropertyInjectionAttribue]
+        System.Action<Avalonia.AvaloniaObject, Radical.Avalonia.ComponentModel.ViewReleaseBehavior> DefaultViewReleaseHandler { get; }
+        [Radical.Avalonia.ComponentModel.IgnorePropertyInjectionAttribue]
+        System.Action<Avalonia.AvaloniaObject> DetachViewBehaviors { get; set; }
+        [Radical.Avalonia.ComponentModel.IgnorePropertyInjectionAttribue]
+        System.Action<Avalonia.AvaloniaObject, object> ExposeViewModelAsStaticResource { get; set; }
+        [Radical.Avalonia.ComponentModel.IgnorePropertyInjectionAttribue]
+        System.Func<object, Avalonia.Controls.Window> FindHostingWindowOf { get; set; }
+        [Radical.Avalonia.ComponentModel.IgnorePropertyInjectionAttribue]
+        System.Func<Avalonia.AvaloniaObject, Avalonia.Controls.Window> FindWindowOf { get; set; }
+        [Radical.Avalonia.ComponentModel.IgnorePropertyInjectionAttribue]
+        System.Func<System.Type, object> GenerateServiceStaticResourceKey { get; set; }
+        [Radical.Avalonia.ComponentModel.IgnorePropertyInjectionAttribue]
+        System.Func<object, string> GenerateViewModelStaticResourceKey { get; set; }
+        [Radical.Avalonia.ComponentModel.IgnorePropertyInjectionAttribue]
+        System.Func<Avalonia.AvaloniaObject, Radical.Avalonia.ComponentModel.ViewDataContextSearchBehavior, object> GetViewDataContext { get; set; }
+        [Radical.Avalonia.ComponentModel.IgnorePropertyInjectionAttribue]
+        System.Func<object, Avalonia.AvaloniaObject> GetViewOfViewModel { get; set; }
+        [Radical.Avalonia.ComponentModel.IgnorePropertyInjectionAttribue]
+        System.Func<Avalonia.Controls.Control, bool> IsHostingView { get; set; }
+        [Radical.Avalonia.ComponentModel.IgnorePropertyInjectionAttribue]
+        System.Func<System.Type, System.Type> ResolveViewModelType { get; set; }
+        [Radical.Avalonia.ComponentModel.IgnorePropertyInjectionAttribue]
+        System.Func<System.Type, System.Type> ResolveViewType { get; set; }
+        [Radical.Avalonia.ComponentModel.IgnorePropertyInjectionAttribue]
+        System.Action<Avalonia.AvaloniaObject, object> SetViewDataContext { get; set; }
+        [Radical.Avalonia.ComponentModel.IgnorePropertyInjectionAttribue]
+        System.Func<Avalonia.AvaloniaObject, object, bool> ShouldExposeViewModelAsStaticResource { get; set; }
+        [Radical.Avalonia.ComponentModel.IgnorePropertyInjectionAttribue]
+        System.Func<Avalonia.AvaloniaObject, bool> ShouldNotifyViewLoaded { get; set; }
+        [Radical.Avalonia.ComponentModel.IgnorePropertyInjectionAttribue]
+        System.Func<Avalonia.AvaloniaObject, object, bool> ShouldNotifyViewModelLoaded { get; set; }
+        [Radical.Avalonia.ComponentModel.IgnorePropertyInjectionAttribue]
+        System.Func<Avalonia.AvaloniaObject, bool> ShouldReleaseView { get; set; }
+        [Radical.Avalonia.ComponentModel.IgnorePropertyInjectionAttribue]
+        System.Func<Avalonia.AvaloniaObject, bool> ShouldUnregisterRegionManagerOfView { get; set; }
+        [Radical.Avalonia.ComponentModel.IgnorePropertyInjectionAttribue]
+        System.Func<Avalonia.AvaloniaObject, bool> ShouldUnsubscribeViewModelOnRelease { get; set; }
+        [Radical.Avalonia.ComponentModel.IgnorePropertyInjectionAttribue]
+        System.Func<Avalonia.AvaloniaObject, System.Action<Avalonia.AvaloniaObject>, Avalonia.AvaloniaObject> TryHookClosedEventOfHostOf { get; set; }
+        [Radical.Avalonia.ComponentModel.IgnorePropertyInjectionAttribue]
+        System.Func<Avalonia.AvaloniaObject, Radical.Avalonia.ComponentModel.ViewDataContextSearchBehavior, bool> ViewHasDataContext { get; set; }
+        [Radical.Avalonia.ComponentModel.IgnorePropertyInjectionAttribue]
+        System.Action<Avalonia.AvaloniaObject, Radical.Avalonia.ComponentModel.ViewReleaseBehavior> ViewReleaseHandler { get; set; }
+    }
+    public interface IElementsRegion : Radical.Avalonia.ComponentModel.IRegion
+    {
+        void Add(Avalonia.AvaloniaObject view);
+        System.Collections.Generic.IEnumerable<TView> GetElements<TView>()
+            where TView : Avalonia.AvaloniaObject;
+        void Remove(Avalonia.AvaloniaObject view);
+    }
+    public interface IExpectViewActivatedCallback
+    {
+        void OnViewActivated();
+    }
+    public interface IExpectViewClosedCallback
+    {
+        void OnViewClosed();
+    }
+    public interface IExpectViewClosingCallback
+    {
+        void OnViewClosing(System.ComponentModel.CancelEventArgs e);
+    }
+    public interface IExpectViewLoadedCallback
+    {
+        void OnViewLoaded();
+    }
+    public interface IExpectViewShownCallback
+    {
+        void OnViewShown();
+    }
+    public interface IRegion
+    {
+        int AsyncLoadDelay { get; set; }
+        Avalonia.AvaloniaObject HostingView { get; }
+        string Name { get; }
+        void Shutdown();
+    }
+    public interface IRegionInjectionHandler
+    {
+        [Radical.Avalonia.ComponentModel.IgnorePropertyInjectionAttribue]
+        System.Action<System.Func<Avalonia.AvaloniaObject>, Radical.Avalonia.ComponentModel.IRegion> Inject { get; set; }
+        System.Collections.Generic.IEnumerable<System.Type> GetViewsInterestedIn(string regionName);
+        void RegisterViewAsInterestedIn(string regionName, System.Type viewType);
+        void RegisterViewsAsInterestedIn(string regionName, System.Collections.Generic.IEnumerable<System.Type> views);
+    }
+    public interface IRegionManager
+    {
+        Radical.Avalonia.ComponentModel.IRegion this[string name] { get; }
+        System.Collections.Generic.IEnumerable<Radical.Avalonia.ComponentModel.IRegion> GetAllRegisteredRegions();
+        Radical.Avalonia.ComponentModel.IRegion GetRegion(string name);
+        TRegion GetRegion<TRegion>(string name)
+            where TRegion : Radical.Avalonia.ComponentModel.IRegion;
+        void RegisterRegion(Radical.Avalonia.ComponentModel.IRegion region);
+        void Shutdown();
+        bool TryGetRegion(string regionName, out Radical.Avalonia.ComponentModel.IRegion region);
+        bool TryGetRegion<TRegion>(string regionName, out TRegion region)
+            where TRegion : Radical.Avalonia.ComponentModel.IRegion;
+    }
+    public interface IRegionManagerFactory
+    {
+        Radical.Avalonia.ComponentModel.IRegionManager Create();
+    }
+    public interface IRegionService
+    {
+        Radical.Avalonia.ComponentModel.IRegionManager FindRegionManager(System.Func<Avalonia.AvaloniaObject, Radical.Avalonia.ComponentModel.IRegionManager, bool> filter);
+        Radical.Avalonia.ComponentModel.IRegionManager GetKnownRegionManager<TView>()
+            where TView : Avalonia.AvaloniaObject;
+        Radical.Avalonia.ComponentModel.IRegionManager GetRegionManager(Avalonia.AvaloniaObject owner);
+        bool HoldsRegionManager(Avalonia.AvaloniaObject owner);
+        Radical.Avalonia.ComponentModel.IRegionManager RegisterRegionManager(Avalonia.AvaloniaObject owner);
+        void UnregisterRegionManager(Avalonia.AvaloniaObject owner);
+        void UnregisterRegionManager(Avalonia.AvaloniaObject owner, Radical.Avalonia.ComponentModel.UnregisterBehavior behavior);
+    }
+    public interface IReleaseComponents
+    {
+        void Release(object component);
+    }
+    public interface IRequireValidation : System.ComponentModel.INotifyDataErrorInfo
+    {
+        bool IsValid { get; }
+        System.Collections.ObjectModel.ObservableCollection<Radical.Validation.ValidationError> ValidationErrors { get; }
+        event System.EventHandler Validated;
+        void ResetValidation();
+        void TriggerValidation();
+        [return: System.Runtime.CompilerServices.TupleElementNames(new string[] {
+                "IsValid",
+                "Errors"})]
+        System.ValueTuple<bool, System.Collections.Generic.IEnumerable<Radical.Validation.ValidationError>> Validate();
+        [return: System.Runtime.CompilerServices.TupleElementNames(new string[] {
+                "IsValid",
+                "Errors"})]
+        System.ValueTuple<bool, System.Collections.Generic.IEnumerable<Radical.Validation.ValidationError>> Validate(Radical.Avalonia.ComponentModel.ValidationBehavior behavior);
+    }
+    public interface ISwitchingElementsRegion : Radical.Avalonia.ComponentModel.IElementsRegion, Radical.Avalonia.ComponentModel.IRegion
+    {
+        Avalonia.AvaloniaObject ActiveContent { get; }
+        Avalonia.AvaloniaObject PreviousActiveContent { get; }
+        event System.EventHandler<Radical.Avalonia.ComponentModel.ActiveContentChangedEventArgs> ActiveContentChanged;
+        void Activate(Avalonia.AvaloniaObject content);
+        void Add(Avalonia.AvaloniaObject view, bool activateOnAdd);
+    }
+    public interface IValidationService
+    {
+        bool IsValidationSuspended { get; }
+        bool MergeValidationErrors { get; set; }
+        void ResumeValidation();
+        System.IDisposable SuspendValidation();
+        [return: System.Runtime.CompilerServices.TupleElementNames(new string[] {
+                "IsValid",
+                "Errors"})]
+        System.ValueTuple<bool, System.Collections.Generic.IEnumerable<Radical.Validation.ValidationError>> Validate();
+        [return: System.Runtime.CompilerServices.TupleElementNames(new string[] {
+                "IsValid",
+                "Errors"})]
+        System.ValueTuple<bool, System.Collections.Generic.IEnumerable<Radical.Validation.ValidationError>> ValidateProperty(string propertyName);
+    }
+    public interface IViewModel : System.ComponentModel.INotifyPropertyChanged
+    {
+        Avalonia.AvaloniaObject View { get; set; }
+    }
+    public interface IViewResolver
+    {
+        Avalonia.AvaloniaObject GetView(System.Type viewType);
+        Avalonia.AvaloniaObject GetView(System.Type viewType, System.Action<object> viewModelInterceptor);
+        T GetView<T>()
+            where T : Avalonia.AvaloniaObject;
+        T GetView<T>(System.Action<object> viewModelInterceptor)
+            where T : Avalonia.AvaloniaObject;
+        TView GetView<TView, TViewModel>(System.Action<TViewModel> viewModelInterceptor)
+            where TView : Avalonia.AvaloniaObject;
+    }
+    [System.AttributeUsage(System.AttributeTargets.Property)]
+    public class IgnorePropertyInjectionAttribue : System.Attribute
+    {
+        public IgnorePropertyInjectionAttribue() { }
+    }
+    [System.AttributeUsage(System.AttributeTargets.Class)]
+    public class InjectViewInRegionAttribute : System.Attribute
+    {
+        public InjectViewInRegionAttribute() { }
+        public string Named { get; set; }
+    }
+    [System.AttributeUsage(System.AttributeTargets.Class, AllowMultiple=false, Inherited=false)]
+    public class NotifyActivatedAttribute : System.Attribute
+    {
+        public NotifyActivatedAttribute() { }
+    }
+    [System.AttributeUsage(System.AttributeTargets.Class, AllowMultiple=false, Inherited=false)]
+    public class NotifyClosedAttribute : System.Attribute
+    {
+        public NotifyClosedAttribute() { }
+    }
+    [System.AttributeUsage(System.AttributeTargets.Class, AllowMultiple=false, Inherited=false)]
+    public class NotifyLoadedAttribute : System.Attribute
+    {
+        public NotifyLoadedAttribute() { }
+    }
+    [System.AttributeUsage(System.AttributeTargets.Class, AllowMultiple=false, Inherited=false)]
+    public class NotifyShownAttribute : System.Attribute
+    {
+        public NotifyShownAttribute() { }
+    }
+    public sealed class SupportComponentDisposeAttribute : System.Attribute
+    {
+        public SupportComponentDisposeAttribute() { }
+    }
+    [System.AttributeUsage(System.AttributeTargets.Class | System.AttributeTargets.Interface)]
+    public class ToolkitComponentAttribute : System.Attribute
+    {
+        public ToolkitComponentAttribute() { }
+    }
+    public enum UnregisterBehavior
+    {
+        Default = 0,
+        WholeLogicalTreeChain = 1,
+    }
+    public enum ValidationBehavior
+    {
+        TriggerValidationErrorsOnFailure = 0,
+        RunSilentValidation = 1,
+    }
+    public enum ViewDataContextSearchBehavior
+    {
+        LocalOnly = 0,
+        Legacy = 1,
+    }
+    [System.AttributeUsage(System.AttributeTargets.Class)]
+    public class ViewManualReleaseAttribute : System.Attribute
+    {
+        public ViewManualReleaseAttribute() { }
+    }
+    public enum ViewReleaseBehavior
+    {
+        Default = 0,
+        Force = 1,
+    }
+}
+namespace Radical.Avalonia.Messaging
+{
+    public class ApplicationBootCompleted
+    {
+        public ApplicationBootCompleted() { }
+    }
+    public class ApplicationShutdown
+    {
+        public ApplicationShutdown(Radical.Avalonia.Bootstrap.ApplicationShutdownReason reason) { }
+        public Radical.Avalonia.Bootstrap.ApplicationShutdownReason Reason { get; }
+    }
+    public class ApplicationShutdownCanceled
+    {
+        public ApplicationShutdownCanceled(Radical.Avalonia.Bootstrap.ApplicationShutdownReason reason) { }
+        public Radical.Avalonia.Bootstrap.ApplicationShutdownReason Reason { get; }
+    }
+    public class ApplicationShutdownRequest
+    {
+        public ApplicationShutdownRequest() { }
+    }
+    public class ApplicationShutdownRequested
+    {
+        public ApplicationShutdownRequested(Radical.Avalonia.Bootstrap.ApplicationShutdownReason reason) { }
+        public bool Cancel { get; set; }
+        public Radical.Avalonia.Bootstrap.ApplicationShutdownReason Reason { get; }
+    }
+    public class CloseViewRequest
+    {
+        public CloseViewRequest(object viewOwner) { }
+        public bool? DialogResult { get; set; }
+        public object ViewOwner { get; }
+    }
+    public class ViewLoaded
+    {
+        public ViewLoaded(Avalonia.AvaloniaObject view) { }
+        public Avalonia.AvaloniaObject View { get; }
+    }
+    public class ViewModelActivated
+    {
+        public ViewModelActivated(object viewModel) { }
+        public object ViewModel { get; }
+    }
+    public class ViewModelClosed
+    {
+        public ViewModelClosed(object viewModel) { }
+        public object ViewModel { get; }
+    }
+    public class ViewModelClosing
+    {
+        public ViewModelClosing(object viewModel) { }
+        public bool Cancel { get; set; }
+        public object ViewModel { get; }
+    }
+    public class ViewModelLoaded
+    {
+        public ViewModelLoaded(object viewModel) { }
+        public object ViewModel { get; }
+    }
+    public class ViewModelShown
+    {
+        public ViewModelShown(object viewModel) { }
+        public object ViewModel { get; }
+    }
+}
+namespace Radical.Avalonia.Presentation
+{
+    public abstract class AbstractMementoViewModel : Radical.Model.MementoEntity, Radical.Avalonia.ComponentModel.IViewModel, System.ComponentModel.INotifyPropertyChanged
+    {
+        protected AbstractMementoViewModel() { }
+        protected AbstractMementoViewModel(Radical.ComponentModel.ChangeTracking.ChangeTrackingRegistration registration) { }
+        protected Radical.Avalonia.ComponentModel.ValidationBehavior DefaultValidationBehavior { get; set; }
+        [Radical.Model.MementoPropertyMetadata(TrackChanges=false)]
+        [Radical.Model.SkipPropertyValidation]
+        [System.ComponentModel.Bindable(false)]
+        public string FocusedElementKey { get; set; }
+        [Radical.Model.SkipPropertyValidation]
+        [System.ComponentModel.Bindable(false)]
+        public bool HasErrors { get; }
+        [Radical.Model.SkipPropertyValidation]
+        protected bool IsResettingValidation { get; }
+        [Radical.Model.SkipPropertyValidation]
+        protected bool IsTriggeringValidation { get; }
+        [Radical.Model.SkipPropertyValidation]
+        [System.ComponentModel.Bindable(false)]
+        public bool IsValid { get; }
+        [Radical.Model.SkipPropertyValidation]
+        protected virtual bool IsValidationEnabled { get; }
+        [Radical.Model.SkipPropertyValidation]
+        protected bool RunValidationOnPropertyChanged { get; set; }
+        [Radical.Model.SkipPropertyValidation]
+        [System.ComponentModel.Bindable(false)]
+        public virtual System.Collections.ObjectModel.ObservableCollection<Radical.Validation.ValidationError> ValidationErrors { get; }
+        [Radical.Model.SkipPropertyValidation]
+        protected Radical.Avalonia.ComponentModel.IValidationService ValidationService { get; set; }
+        public event System.EventHandler<System.ComponentModel.DataErrorsChangedEventArgs> ErrorsChanged;
+        public event System.EventHandler Validated;
+        public System.Collections.IEnumerable GetErrors(string propertyName) { }
+        protected string GetPropertyDisplayName(string propertyName) { }
+        protected virtual void MoveFocusTo(string focusedElementKey) { }
+        [System.Obsolete("This function has been obsoleted and will be removed in v3.0.0. Use MoveFocusTo(n" +
+            "ameof(property)) instead")]
+        protected virtual void MoveFocusTo<T>(System.Linq.Expressions.Expression<System.Func<T>> property) { }
+        protected virtual void OnAcceptingChanges(System.ComponentModel.CancelEventArgs e) { }
+        protected virtual void OnChangesAccepted() { }
+        protected virtual void OnChangesRejected() { }
+        protected void OnErrorsChanged(string propertyName) { }
+        protected override void OnMementoChanged(Radical.ComponentModel.ChangeTracking.IChangeTrackingService newMemento, Radical.ComponentModel.ChangeTracking.IChangeTrackingService oldMemento) { }
+        protected override void OnPropertyChanged(System.ComponentModel.PropertyChangedEventArgs e) { }
+        protected virtual void OnRejectingChanges(System.ComponentModel.CancelEventArgs e) { }
+        protected virtual void OnValidated() { }
+        public virtual void ResetValidation() { }
+        protected virtual bool SkipPropertyValidation(string propertyName) { }
+        public virtual void TriggerValidation() { }
+        [return: System.Runtime.CompilerServices.TupleElementNames(new string[] {
+                "IsValid",
+                "Errors"})]
+        public System.ValueTuple<bool, System.Collections.Generic.IEnumerable<Radical.Validation.ValidationError>> Validate() { }
+        [return: System.Runtime.CompilerServices.TupleElementNames(new string[] {
+                "IsValid",
+                "Errors"})]
+        public System.ValueTuple<bool, System.Collections.Generic.IEnumerable<Radical.Validation.ValidationError>> Validate(Radical.Avalonia.ComponentModel.ValidationBehavior behavior) { }
+        [return: System.Runtime.CompilerServices.TupleElementNames(new string[] {
+                "IsValid",
+                "Errors"})]
+        protected System.ValueTuple<bool, System.Collections.Generic.IEnumerable<Radical.Validation.ValidationError>> ValidateProperty(string propertyName) { }
+        [return: System.Runtime.CompilerServices.TupleElementNames(new string[] {
+                "IsValid",
+                "Errors"})]
+        protected virtual System.ValueTuple<bool, System.Collections.Generic.IEnumerable<Radical.Validation.ValidationError>> ValidateProperty(string propertyName, Radical.Avalonia.ComponentModel.ValidationBehavior behavior) { }
+    }
+    public abstract class AbstractViewModel : Radical.Model.Entity, Radical.Avalonia.ComponentModel.IViewModel, System.ComponentModel.INotifyPropertyChanged, System.ComponentModel.ISupportInitialize
+    {
+        protected AbstractViewModel() { }
+        protected Radical.Avalonia.ComponentModel.ValidationBehavior DefaultValidationBehavior { get; set; }
+        [Radical.Model.MementoPropertyMetadata(TrackChanges=false)]
+        [Radical.Model.SkipPropertyValidation]
+        [System.ComponentModel.Bindable(false)]
+        public string FocusedElementKey { get; set; }
+        [Radical.Model.SkipPropertyValidation]
+        [System.ComponentModel.Bindable(false)]
+        public bool HasErrors { get; }
+        [Radical.Model.SkipPropertyValidation]
+        protected bool IsResettingValidation { get; }
+        [Radical.Model.SkipPropertyValidation]
+        protected bool IsTriggeringValidation { get; }
+        [Radical.Model.SkipPropertyValidation]
+        [System.ComponentModel.Bindable(false)]
+        public bool IsValid { get; }
+        [Radical.Model.SkipPropertyValidation]
+        protected virtual bool IsValidationEnabled { get; }
+        [Radical.Model.SkipPropertyValidation]
+        protected bool RunValidationOnPropertyChanged { get; set; }
+        [Radical.Model.SkipPropertyValidation]
+        [System.ComponentModel.Bindable(false)]
+        public virtual System.Collections.ObjectModel.ObservableCollection<Radical.Validation.ValidationError> ValidationErrors { get; }
+        [Radical.Model.SkipPropertyValidation]
+        protected Radical.Avalonia.ComponentModel.IValidationService ValidationService { get; set; }
+        public event System.EventHandler<System.ComponentModel.DataErrorsChangedEventArgs> ErrorsChanged;
+        public event System.EventHandler Validated;
+        public System.Collections.IEnumerable GetErrors(string propertyName) { }
+        protected string GetPropertyDisplayName(string propertyName) { }
+        protected virtual void MoveFocusTo(string focusedElementKey) { }
+        [System.Obsolete("This function has been obsoleted and will be removed in v3.0.0. Use MoveFocusTo(n" +
+            "ameof(property)) instead")]
+        protected virtual void MoveFocusTo<T>(System.Linq.Expressions.Expression<System.Func<T>> property) { }
+        protected void OnErrorsChanged(string propertyName) { }
+        protected override void OnPropertyChanged(System.ComponentModel.PropertyChangedEventArgs e) { }
+        protected virtual void OnValidated() { }
+        public virtual void ResetValidation() { }
+        protected virtual bool SkipPropertyValidation(string propertyName) { }
+        public virtual void TriggerValidation() { }
+        [return: System.Runtime.CompilerServices.TupleElementNames(new string[] {
+                "IsValid",
+                "Errors"})]
+        public System.ValueTuple<bool, System.Collections.Generic.IEnumerable<Radical.Validation.ValidationError>> Validate() { }
+        [return: System.Runtime.CompilerServices.TupleElementNames(new string[] {
+                "IsValid",
+                "Errors"})]
+        public virtual System.ValueTuple<bool, System.Collections.Generic.IEnumerable<Radical.Validation.ValidationError>> Validate(Radical.Avalonia.ComponentModel.ValidationBehavior behavior) { }
+        [return: System.Runtime.CompilerServices.TupleElementNames(new string[] {
+                "IsValid",
+                "Errors"})]
+        protected System.ValueTuple<bool, System.Collections.Generic.IEnumerable<Radical.Validation.ValidationError>> ValidateProperty(string propertyName) { }
+        [return: System.Runtime.CompilerServices.TupleElementNames(new string[] {
+                "IsValid",
+                "Errors"})]
+        protected virtual System.ValueTuple<bool, System.Collections.Generic.IEnumerable<Radical.Validation.ValidationError>> ValidateProperty(string propertyName, Radical.Avalonia.ComponentModel.ValidationBehavior behavior) { }
+    }
+    public static class ValidationErrorsExtensions
+    {
+        public static System.Collections.Generic.IEnumerable<string> GetInvalidProperties(this System.Collections.ObjectModel.ObservableCollection<Radical.Validation.ValidationError> validationErrors) { }
+    }
+}
+namespace Radical.Avalonia
+{
+    public sealed class RadicalApplication
+    {
+        public void Boot() { }
+        public void Shutdown() { }
+    }
+}
+namespace Radical.Avalonia.Regions
+{
+    public static class RegionExtensions
+    {
+        public static void AddContentAsync(this Radical.Avalonia.ComponentModel.IElementsRegion region, System.Func<Avalonia.AvaloniaObject> viewFactory, int millisecondsDelay = 2000) { }
+        public static void SetContentAsync(this Radical.Avalonia.ComponentModel.IContentRegion region, System.Func<Avalonia.AvaloniaObject> viewFactory, int millisecondsDelay = 2000) { }
+    }
+    public class RegionManager : Radical.Avalonia.ComponentModel.IRegionManager
+    {
+        public RegionManager() { }
+        public Radical.Avalonia.ComponentModel.IRegion this[string name] { get; }
+        public System.Collections.Generic.IEnumerable<Radical.Avalonia.ComponentModel.IRegion> GetAllRegisteredRegions() { }
+        public Radical.Avalonia.ComponentModel.IRegion GetRegion(string name) { }
+        public TRegion GetRegion<TRegion>(string name)
+            where TRegion : Radical.Avalonia.ComponentModel.IRegion { }
+        public void RegisterRegion(Radical.Avalonia.ComponentModel.IRegion region) { }
+        public void Shutdown() { }
+        public bool TryGetRegion(string name, out Radical.Avalonia.ComponentModel.IRegion region) { }
+        public bool TryGetRegion<TRegion>(string regionName, out TRegion region)
+            where TRegion : Radical.Avalonia.ComponentModel.IRegion { }
+    }
+    public class RegionManagerFactory : Radical.Avalonia.ComponentModel.IRegionManagerFactory
+    {
+        public RegionManagerFactory(System.IServiceProvider container) { }
+        public Radical.Avalonia.ComponentModel.IRegionManager Create() { }
+    }
+    public class RegionService : Radical.Avalonia.ComponentModel.IRegionService
+    {
+        public static readonly Avalonia.AttachedProperty<Radical.Avalonia.ComponentModel.IRegion> RegionProperty;
+        public RegionService(Radical.Avalonia.ComponentModel.IRegionManagerFactory regionManagerFactory, Radical.Avalonia.ComponentModel.IConventionsHandler conventions) { }
+        public static Radical.Avalonia.ComponentModel.IConventionsHandler Conventions { get; set; }
+        public static Radical.Avalonia.ComponentModel.IRegionService CurrentService { get; set; }
+        public Radical.Avalonia.ComponentModel.IRegionManager FindRegionManager(System.Func<Avalonia.AvaloniaObject, Radical.Avalonia.ComponentModel.IRegionManager, bool> filter) { }
+        public Radical.Avalonia.ComponentModel.IRegionManager GetKnownRegionManager<TView>()
+            where TView : Avalonia.AvaloniaObject { }
+        public Radical.Avalonia.ComponentModel.IRegionManager GetRegionManager(Avalonia.AvaloniaObject owner) { }
+        public bool HoldsRegionManager(Avalonia.AvaloniaObject owner) { }
+        public Radical.Avalonia.ComponentModel.IRegionManager RegisterRegionManager(Avalonia.AvaloniaObject owner) { }
+        public void UnregisterRegionManager(Avalonia.AvaloniaObject owner) { }
+        public void UnregisterRegionManager(Avalonia.AvaloniaObject owner, Radical.Avalonia.ComponentModel.UnregisterBehavior behavior) { }
+        public static Radical.Avalonia.ComponentModel.IRegion GetRegion(Avalonia.Controls.Control control) { }
+        public static void SetRegion(Avalonia.Controls.Control control, Radical.Avalonia.ComponentModel.IRegion value) { }
+    }
+}
+namespace Radical.Avalonia.Validation
+{
+    public abstract class AbstractValidationService : Radical.Avalonia.ComponentModel.IValidationService
+    {
+        protected AbstractValidationService() { }
+        public bool IsValidationSuspended { get; }
+        public bool MergeValidationErrors { get; set; }
+        protected abstract System.Collections.Generic.IEnumerable<Radical.Validation.ValidationError> OnValidate();
+        protected virtual System.Collections.Generic.IEnumerable<Radical.Validation.ValidationError> OnValidateProperty(string propertyName) { }
+        public void ResumeValidation() { }
+        public System.IDisposable SuspendValidation() { }
+        [return: System.Runtime.CompilerServices.TupleElementNames(new string[] {
+                "IsValid",
+                "Errors"})]
+        public System.ValueTuple<bool, System.Collections.Generic.IEnumerable<Radical.Validation.ValidationError>> Validate() { }
+        [return: System.Runtime.CompilerServices.TupleElementNames(new string[] {
+                "IsValid",
+                "Errors"})]
+        public System.ValueTuple<bool, System.Collections.Generic.IEnumerable<Radical.Validation.ValidationError>> ValidateProperty(string propertyName) { }
+    }
+    public static class DataAnnotationValidationService
+    {
+        public static Radical.Avalonia.Validation.DataAnnotationValidationService<TEntity> CreateFor<TEntity>(TEntity entity) { }
+    }
+    public class DataAnnotationValidationService<TEntity> : Radical.Avalonia.Validation.AbstractValidationService
+    {
+        public DataAnnotationValidationService(TEntity entity) { }
+        public System.Func<string, object, object> PropertyValueGetter { get; set; }
+        public Radical.Avalonia.Validation.DataAnnotationValidationService<TEntity> AddRule(System.Linq.Expressions.Expression<System.Func<TEntity, object>> property, System.Func<Radical.Validation.ValidationContext<TEntity>, Radical.Validation.ValidationResult> rule) { }
+        protected override System.Collections.Generic.IEnumerable<Radical.Validation.ValidationError> OnValidate() { }
+        protected override System.Collections.Generic.IEnumerable<Radical.Validation.ValidationError> OnValidateProperty(string propertyName) { }
+    }
+    public sealed class DelegateValidationService : Radical.Avalonia.Validation.AbstractValidationService
+    {
+        public DelegateValidationService(System.Func<System.Collections.Generic.IEnumerable<Radical.Validation.ValidationError>> validationCallback) { }
+        protected override System.Collections.Generic.IEnumerable<Radical.Validation.ValidationError> OnValidate() { }
+    }
+    public sealed class NullValidationService : Radical.Avalonia.Validation.AbstractValidationService
+    {
+        public static readonly Radical.Avalonia.ComponentModel.IValidationService Instance;
+        protected override System.Collections.Generic.IEnumerable<Radical.Validation.ValidationError> OnValidate() { }
+    }
+}
