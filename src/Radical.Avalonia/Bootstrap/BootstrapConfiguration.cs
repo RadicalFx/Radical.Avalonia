@@ -30,6 +30,8 @@ namespace Radical.Avalonia.Bootstrap
         internal Action<ApplicationShuttingDownArgs> ShuttingDownHandler { get; private set; } = _ => { };
         internal Action<IServiceProvider> BootingHandler { get; private set; } = _ => { };
         internal bool IsAutoBootEnabled { get; private set; } = true;
+        internal bool IsSplashScreenEnabled { get; private set; } = false;
+        internal SplashScreenConfiguration SplashScreenConfiguration { get; private set; } = new SplashScreenConfiguration();
         internal Action<IServiceProvider> OnServiceProviderCreatedHandler { get; private set; } = _ => { };
         internal Action<Exception> UnhandledExceptionHandler { get; private set; } = _ => { };
         internal Action<IServiceProvider> BootCompletedHandler { get; private set; } = _ => { };
@@ -234,6 +236,19 @@ namespace Radical.Avalonia.Bootstrap
         public void DisableAutoBoot()
         {
             IsAutoBootEnabled = false;
+        }
+
+        /// <summary>
+        /// Enables splash screen support.
+        /// </summary>
+        public void EnableSplashScreen(SplashScreenConfiguration config = null)
+        {
+            if (config != null)
+            {
+                SplashScreenConfiguration = config;
+            }
+
+            IsSplashScreenEnabled = true;
         }
 
         /// <summary>
