@@ -1,0 +1,100 @@
+﻿using Radical.Conversions;
+using System;
+using Avalonia.Data.Converters;
+using Avalonia.Markup.Xaml;
+
+namespace Radical.Avalonia.Converters
+{
+    /// <summary>
+    /// A value converter to convert from bool to visibility and back. Avalonia
+    /// has no Visibility type: visibility is the IsVisible boolean property.
+    /// </summary>
+    public class BooleanToVisibilityConverter : IValueConverter
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BooleanToVisibilityConverter"/> class.
+        /// </summary>
+        public BooleanToVisibilityConverter()
+        {
+            FalseValue = false;
+            TrueValue = true;
+        }
+
+        /// <summary>
+        /// Gets or sets the false value.
+        /// </summary>
+        /// <value>
+        /// The false value.
+        /// </value>
+        public bool FalseValue
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets the true value.
+        /// </summary>
+        /// <value>
+        /// The true value.
+        /// </value>
+        public bool TrueValue
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Modifies the source data before passing it to the target for display in the UI.
+        /// </summary>
+        /// <param name="value">The source data being passed to the target.</param>
+        /// <param name="targetType">The <see cref="T:System.Type"/> of data expected by the target dependency property.</param>
+        /// <param name="parameter">An optional parameter to be used in the converter logic.</param>
+        /// <param name="culture">The culture of the conversion.</param>
+        /// <returns>
+        /// The value to be passed to the target dependency property.
+        /// </returns>
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            if (!bool.TryParse(parameter as string, out bool inverted))
+            {
+                inverted = false;
+            }
+
+            bool flag = false;
+            if (value is bool)
+            {
+                flag = (bool)value;
+            }
+            else if (value is bool?)
+            {
+                var nullable = (bool?)value;
+                flag = nullable.HasValue ? nullable.Value : false;
+            }
+
+            if (inverted)
+            {
+                return (flag ? FalseValue : TrueValue);
+            }
+            else
+            {
+                return (flag ? TrueValue : FalseValue);
+            }
+        }
+
+        /// <summary>
+        /// Modifies the target data before passing it to the source object.  This method is called only in <see cref="F:System.Windows.Data.BindingMode.TwoWay"/> bindings.
+        /// </summary>
+        /// <param name="value">The target data being passed to the source.</param>
+        /// <param name="targetType">The <see cref="T:System.Type"/> of data expected by the source object.</param>
+        /// <param name="parameter">An optional parameter to be used in the converter logic.</param>
+        /// <param name="culture">The culture of the conversion.</param>
+        /// <returns>
+        /// The value to be passed to the source object.
+        /// </returns>
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            return value is bool visible && visible == TrueValue;
+        }
+    }
+}

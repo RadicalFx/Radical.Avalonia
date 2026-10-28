@@ -1,0 +1,12 @@
+﻿<UserControl x:Class="Radical.Avalonia.Tests.Converters.ConvertersView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:rc="using:Radical.Avalonia.Converters">
+    <UserControl.Resources>
+        <rc:NullToVisibilityConverter x:Key="NullToVisibility" />
+    </UserControl.Resources>
+    <StackPanel>
+        <TextBlock x:Name="NotTarget" IsVisible="{ReflectionBinding IsHidden, Converter={rc:NotConverter}}" />
+        <TextBlock x:Name="NullTarget" IsVisible="{ReflectionBinding Item, Converter={StaticResource NullToVisibility}}" />
+    </StackPanel>
+</UserControl>
