@@ -611,6 +611,76 @@ namespace Radical.Avalonia.ComponentModel
         Force = 1,
     }
 }
+namespace Radical.Avalonia.Converters
+{
+    public abstract class AbstractSingletonConverter : Avalonia.Markup.Xaml.MarkupExtension, Avalonia.Data.Converters.IValueConverter
+    {
+        protected AbstractSingletonConverter() { }
+        public abstract object Convert(object value, System.Type targetType, object parameter, System.Globalization.CultureInfo culture);
+        public abstract object ConvertBack(object value, System.Type targetType, object parameter, System.Globalization.CultureInfo culture);
+        public override sealed object ProvideValue(System.IServiceProvider serviceProvider) { }
+    }
+    public class BinaryImageConverter : Radical.Avalonia.Converters.AbstractSingletonConverter
+    {
+        public BinaryImageConverter() { }
+        public override object Convert(object value, System.Type targetType, object parameter, System.Globalization.CultureInfo culture) { }
+        public override object ConvertBack(object value, System.Type targetType, object parameter, System.Globalization.CultureInfo culture) { }
+    }
+    public class BooleanConverter : Avalonia.Data.Converters.IValueConverter
+    {
+        public BooleanConverter() { }
+        public object FalseValue { get; set; }
+        public object TrueValue { get; set; }
+        public object Convert(object value, System.Type targetType, object parameter, System.Globalization.CultureInfo culture) { }
+        public object ConvertBack(object value, System.Type targetType, object parameter, System.Globalization.CultureInfo culture) { }
+    }
+    public class BooleanToVisibilityConverter : Avalonia.Data.Converters.IValueConverter
+    {
+        public BooleanToVisibilityConverter() { }
+        public bool FalseValue { get; set; }
+        public bool TrueValue { get; set; }
+        public object Convert(object value, System.Type targetType, object parameter, System.Globalization.CultureInfo culture) { }
+        public object ConvertBack(object value, System.Type targetType, object parameter, System.Globalization.CultureInfo culture) { }
+    }
+    public class EnumBooleanConverter : Avalonia.Data.Converters.IValueConverter
+    {
+        public EnumBooleanConverter() { }
+        public object Convert(object value, System.Type targetType, object parameter, System.Globalization.CultureInfo culture) { }
+        public object ConvertBack(object value, System.Type targetType, object parameter, System.Globalization.CultureInfo culture) { }
+        public bool HasFlag(System.Enum variable, System.Enum value) { }
+    }
+    public sealed class EnumCaptionConverter : Radical.Avalonia.Converters.AbstractSingletonConverter
+    {
+        public EnumCaptionConverter() { }
+        public override object Convert(object value, System.Type targetType, object parameter, System.Globalization.CultureInfo culture) { }
+        public override object ConvertBack(object value, System.Type targetType, object parameter, System.Globalization.CultureInfo culture) { }
+    }
+    public sealed class EnumDescriptionConverter : Radical.Avalonia.Converters.AbstractSingletonConverter
+    {
+        public EnumDescriptionConverter() { }
+        public override object Convert(object value, System.Type targetType, object parameter, System.Globalization.CultureInfo culture) { }
+        public override object ConvertBack(object value, System.Type targetType, object parameter, System.Globalization.CultureInfo culture) { }
+    }
+    public class LinqFirstOrDefaultConverter : Radical.Avalonia.Converters.AbstractSingletonConverter
+    {
+        public LinqFirstOrDefaultConverter() { }
+        public override object Convert(object value, System.Type targetType, object parameter, System.Globalization.CultureInfo culture) { }
+        public override object ConvertBack(object value, System.Type targetType, object parameter, System.Globalization.CultureInfo culture) { }
+    }
+    public sealed class NotConverter : Radical.Avalonia.Converters.AbstractSingletonConverter
+    {
+        public NotConverter() { }
+        public override object Convert(object value, System.Type targetType, object parameter, System.Globalization.CultureInfo culture) { }
+        public override object ConvertBack(object value, System.Type targetType, object parameter, System.Globalization.CultureInfo culture) { }
+    }
+    public class NullToVisibilityConverter : Avalonia.Data.Converters.IValueConverter
+    {
+        public NullToVisibilityConverter() { }
+        public bool NullValue { get; set; }
+        public object Convert(object value, System.Type targetType, object parameter, System.Globalization.CultureInfo culture) { }
+        public object ConvertBack(object value, System.Type targetType, object parameter, System.Globalization.CultureInfo culture) { }
+    }
+}
 namespace Radical.Avalonia.Input
 {
     public static class CommandExtensions
