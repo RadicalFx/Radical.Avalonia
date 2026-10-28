@@ -23,6 +23,13 @@ namespace Microsoft.Extensions.Hosting
             where TShellView : Avalonia.Controls.Window { }
     }
 }
+namespace Radical.Avalonia.Analytics
+{
+    public class CommandEvent : Radical.Analytics.AnalyticsEvent
+    {
+        public CommandEvent() { }
+    }
+}
 namespace Radical.Avalonia.Behaviors
 {
     public class DependencyObjectCloseHandlerBehavior : Avalonia.Xaml.Interactivity.Behavior<Avalonia.AvaloniaObject>
@@ -237,6 +244,36 @@ namespace Radical.Avalonia.Bootstrap
         public Avalonia.Controls.WindowStartupLocation WindowStartupLocation { get; set; }
     }
 }
+namespace Radical.Avalonia.CommandBuilders
+{
+    public class BooleanFact
+    {
+        public BooleanFact() { }
+        public System.Func<bool> FastGetter { get; set; }
+        public string Name { get; set; }
+    }
+    public class CommandData
+    {
+        public CommandData() { }
+        public Radical.Avalonia.CommandBuilders.BooleanFact BooleanFact { get; set; }
+        public object DataContext { get; set; }
+        public Radical.Avalonia.ComponentModel.CommandDescriptionAttribute Description { get; set; }
+        public Radical.Reflection.LateBoundVoidMethod FastDelegate { get; set; }
+        public bool HasParameter { get; set; }
+        public Radical.Avalonia.ComponentModel.KeyBindingAttribute[] KeyBindings { get; set; }
+        public string MethodName { get; set; }
+        public Radical.ComponentModel.IMonitor Monitor { get; set; }
+        public System.Type ParameterType { get; set; }
+    }
+    public class DelegateCommandBuilder
+    {
+        public DelegateCommandBuilder() { }
+        public virtual bool CanCreateCommand(string path, Avalonia.AvaloniaObject target) { }
+        public virtual Radical.Avalonia.ComponentModel.IDelegateCommand CreateCommand(Radical.Avalonia.CommandBuilders.CommandData commandData) { }
+        public virtual object GetDataContext(Avalonia.AvaloniaObject target) { }
+        public virtual bool TryGenerateCommandData(string path, object dataContext, out Radical.Avalonia.CommandBuilders.CommandData data) { }
+    }
+}
 namespace Radical.Avalonia.ComponentModel
 {
     public class ActiveContentChangedEventArgs : System.EventArgs
@@ -245,6 +282,12 @@ namespace Radical.Avalonia.ComponentModel
         public Avalonia.AvaloniaObject ActiveContent { get; }
         public bool HasActiveContent { get; }
         public Avalonia.AvaloniaObject PreviousActiveContent { get; }
+    }
+    [System.AttributeUsage(System.AttributeTargets.Method, AllowMultiple=false)]
+    public class CommandDescriptionAttribute : System.Attribute
+    {
+        public CommandDescriptionAttribute(string displayText) { }
+        public string DisplayText { get; }
     }
     [System.AttributeUsage(System.AttributeTargets.Class, Inherited=false)]
     public class ExposeViewModelAsStaticResourceAttribute : System.Attribute
@@ -351,6 +394,21 @@ namespace Radical.Avalonia.ComponentModel
         System.Func<Avalonia.AvaloniaObject, Radical.Avalonia.ComponentModel.ViewDataContextSearchBehavior, bool> ViewHasDataContext { get; set; }
         [Radical.Avalonia.ComponentModel.IgnorePropertyInjectionAttribue]
         System.Action<Avalonia.AvaloniaObject, Radical.Avalonia.ComponentModel.ViewReleaseBehavior> ViewReleaseHandler { get; set; }
+    }
+    public interface IDelegateCommand : System.Windows.Input.ICommand
+    {
+        string DisplayText { get; }
+        System.Collections.Generic.IList<Avalonia.Input.KeyBinding> InputBindings { get; }
+        Radical.Avalonia.ComponentModel.IDelegateCommand AddGesture(Avalonia.Input.KeyGesture gesture);
+        Radical.Avalonia.ComponentModel.IDelegateCommand AddKeyGesture(Avalonia.Input.Key key);
+        Radical.Avalonia.ComponentModel.IDelegateCommand AddKeyGesture(Avalonia.Input.Key key, Avalonia.Input.KeyModifiers modifiers);
+        Radical.Avalonia.ComponentModel.IDelegateCommand AddMonitor(Radical.ComponentModel.IMonitor source);
+        Radical.Avalonia.ComponentModel.IDelegateCommand AddMonitor(params Radical.ComponentModel.IMonitor[] triggers);
+        void EvaluateCanExecute();
+        Radical.Avalonia.ComponentModel.IDelegateCommand OnCanExecute(System.Func<object, bool> canExecuteMethod);
+        Radical.Avalonia.ComponentModel.IDelegateCommand OnExecute(System.Action<object> executeMethod);
+        Radical.Avalonia.ComponentModel.IDelegateCommand RemoveMonitor(Radical.ComponentModel.IMonitor source);
+        Radical.Avalonia.ComponentModel.IDelegateCommand WithTrackingPreview(System.Action<Radical.Analytics.AnalyticsEvent> onBeforeTracking);
     }
     public interface IElementsRegion : Radical.Avalonia.ComponentModel.IRegion
     {
@@ -491,6 +549,13 @@ namespace Radical.Avalonia.ComponentModel
         public InjectViewInRegionAttribute() { }
         public string Named { get; set; }
     }
+    [System.AttributeUsage(System.AttributeTargets.Method, AllowMultiple=true)]
+    public class KeyBindingAttribute : System.Attribute
+    {
+        public KeyBindingAttribute(Avalonia.Input.Key key) { }
+        public Avalonia.Input.Key Key { get; }
+        public Avalonia.Input.KeyModifiers Modifiers { get; set; }
+    }
     [System.AttributeUsage(System.AttributeTargets.Class, AllowMultiple=false, Inherited=false)]
     public class NotifyActivatedAttribute : System.Attribute
     {
@@ -544,6 +609,42 @@ namespace Radical.Avalonia.ComponentModel
     {
         Default = 0,
         Force = 1,
+    }
+}
+namespace Radical.Avalonia.Input
+{
+    public static class CommandExtensions
+    {
+        public static System.Collections.Generic.IEnumerable<Avalonia.Input.KeyGesture> GetGestures(this System.Windows.Input.ICommand source) { }
+    }
+    public class DelegateCommand : Avalonia.Utilities.IWeakEventSubscriber<System.EventArgs>, Radical.Avalonia.ComponentModel.IDelegateCommand, System.Windows.Input.ICommand
+    {
+        public static readonly Radical.Avalonia.ComponentModel.IDelegateCommand Empty;
+        public DelegateCommand(System.Action<object> executeMethod, System.Func<object, bool> canExecuteMethod, string displayText) { }
+        public string DisplayText { get; }
+        public System.Collections.Generic.IList<Avalonia.Input.KeyBinding> InputBindings { get; }
+        public event System.EventHandler CanExecuteChanged;
+        public Radical.Avalonia.ComponentModel.IDelegateCommand AddGesture(Avalonia.Input.KeyGesture gesture) { }
+        public Radical.Avalonia.ComponentModel.IDelegateCommand AddKeyGesture(Avalonia.Input.Key key) { }
+        public Radical.Avalonia.ComponentModel.IDelegateCommand AddKeyGesture(Avalonia.Input.Key key, Avalonia.Input.KeyModifiers mk) { }
+        public Radical.Avalonia.ComponentModel.IDelegateCommand AddMonitor(Radical.ComponentModel.IMonitor source) { }
+        public Radical.Avalonia.ComponentModel.IDelegateCommand AddMonitor(params Radical.ComponentModel.IMonitor[] triggers) { }
+        public bool CanExecute(object parameter) { }
+        public virtual void EvaluateCanExecute() { }
+        public void Execute(object parameter) { }
+        public virtual Radical.Avalonia.ComponentModel.IDelegateCommand OnCanExecute(System.Func<object, bool> canExecuteMethod) { }
+        protected virtual void OnCanExecuteChanged() { }
+        public virtual Radical.Avalonia.ComponentModel.IDelegateCommand OnExecute(System.Action<object> executeMethod) { }
+        protected virtual void OnTriggerChanged(Radical.ComponentModel.IMonitor source) { }
+        public Radical.Avalonia.ComponentModel.IDelegateCommand RemoveMonitor(Radical.ComponentModel.IMonitor source) { }
+        public Radical.Avalonia.ComponentModel.IDelegateCommand WithTrackingPreview(System.Action<Radical.Analytics.AnalyticsEvent> onBeforeTracking) { }
+        public static Radical.Avalonia.ComponentModel.IDelegateCommand Create() { }
+        public static Radical.Avalonia.ComponentModel.IDelegateCommand Create(string displayText) { }
+    }
+    public static class DelegateCommandExtensions
+    {
+        public static Radical.Avalonia.ComponentModel.IDelegateCommand Observe<TSource>(this Radical.Avalonia.ComponentModel.IDelegateCommand command, TSource source, params System.Linq.Expressions.Expression<System.Func<TSource, object>>[] properties)
+            where TSource : System.ComponentModel.INotifyPropertyChanged { }
     }
 }
 namespace Radical.Avalonia.Messaging
@@ -608,6 +709,19 @@ namespace Radical.Avalonia.Messaging
     {
         public ViewModelShown(object viewModel) { }
         public object ViewModel { get; }
+    }
+}
+namespace Radical.Avalonia
+{
+    public static class MonitorChangedWeakEventManager
+    {
+        public static void AddListener(Radical.ComponentModel.IMonitor source, Avalonia.Utilities.IWeakEventSubscriber<System.EventArgs> listener) { }
+        public static void RemoveListener(Radical.ComponentModel.IMonitor source, Avalonia.Utilities.IWeakEventSubscriber<System.EventArgs> listener) { }
+    }
+    public sealed class RadicalApplication
+    {
+        public void Boot() { }
+        public void Shutdown() { }
     }
 }
 namespace Radical.Avalonia.Presentation
@@ -737,14 +851,6 @@ namespace Radical.Avalonia.Presentation
     public static class ValidationErrorsExtensions
     {
         public static System.Collections.Generic.IEnumerable<string> GetInvalidProperties(this System.Collections.ObjectModel.ObservableCollection<Radical.Validation.ValidationError> validationErrors) { }
-    }
-}
-namespace Radical.Avalonia
-{
-    public sealed class RadicalApplication
-    {
-        public void Boot() { }
-        public void Shutdown() { }
     }
 }
 namespace Radical.Avalonia.Regions
