@@ -1,0 +1,46 @@
+# User-specific files
+*.suo
+*.user
+.vs/
+*.orig
+
+# Nuget packages 
+[Pp]ackages/
+
+# Build results
+
+[Dd]ebug/
+[Rr]elease/
+x64/
+build/
+[Bb]in/
+[Oo]bj/
+[Nn]ugets/
+
+# MSTest test Results
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+*.Approve_API.received.txt
+
+# Code coverage reports
+coverage.opencover.xml
+
+# ReSharper is a .NET coding add-in
+_ReSharper*/
+*.[Rr]e[Ss]harper
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# Folder config file
+Desktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# Mac desktop service store files
+.DS_Store
+
+# JetBrains stuff
+.idea/
