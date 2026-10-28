@@ -11,6 +11,7 @@ using Unity.Microsoft.DependencyInjection;
 
 namespace Radical.Avalonia.Tests.Boot
 {
+    [TestClass]
     public class RadicalApplicationTestsWithGenericHost
     {
         [AvaloniaTestMethod]

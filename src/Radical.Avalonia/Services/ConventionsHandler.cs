@@ -8,6 +8,7 @@ using Radical.Avalonia.Bootstrap;
 using Radical.Avalonia.ComponentModel;
 using Radical.Avalonia.Regions;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Avalonia;
@@ -320,15 +321,17 @@ namespace Radical.Avalonia.Services
             DefaultDetachViewBehaviors = view =>
             {
                 var bhv = Interaction.GetBehaviors(view);
+                var toRemove = bhv.OfType<DependencyObjectCloseHandlerBehavior>().Cast<AvaloniaObject>().ToList();
                 if(view is Window)
                 {
-                    bhv.OfType<WindowLifecycleNotificationsBehavior>().ToList().ForEach(x => bhv.Remove(x));
+                    toRemove.AddRange(bhv.OfType<WindowLifecycleNotificationsBehavior>());
                 }
                 else if(view is Control)
                 {
-                    bhv.OfType<FrameworkElementLifecycleNotificationsBehavior>().ToList().ForEach(x => bhv.Remove(x));
+                    toRemove.AddRange(bhv.OfType<FrameworkElementLifecycleNotificationsBehavior>());
                 }
-                bhv.OfType<DependencyObjectCloseHandlerBehavior>().ToList().ForEach(x => bhv.Remove(x));
+
+                RemoveBehaviors(bhv, toRemove);
             };
 
             DetachViewBehaviors = view =>
@@ -376,6 +379,29 @@ namespace Radical.Avalonia.Services
 
             DefaultGenerateServiceStaticResourceKey = type => type.Namespace + "." + type.Name;
             GenerateServiceStaticResourceKey = type => DefaultGenerateServiceStaticResourceKey(type);
+        }
+
+        static void RemoveBehaviors(BehaviorCollection behaviors, List<AvaloniaObject> toRemove)
+        {
+            if(toRemove.Count == 0)
+            {
+                return;
+            }
+
+            var isAttached = behaviors.OfType<Behavior>().Any(b => b.AssociatedObject != null);
+            if(isAttached)
+            {
+                toRemove.ForEach(x => behaviors.Remove(x));
+            }
+            else
+            {
+                // Xaml.Behaviors throws when removing a behavior from a collection whose
+                // control has left the visual tree (e.g. a view released after its window
+                // closed): clearing and re-adding the remaining behaviors is safe instead.
+                var remaining = behaviors.Except(toRemove).ToList();
+                behaviors.Clear();
+                behaviors.AddRange(remaining);
+            }
         }
 
         /// <summary>

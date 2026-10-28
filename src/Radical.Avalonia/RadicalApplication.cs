@@ -7,8 +7,10 @@ using Radical.Avalonia.ComponentModel;
 using Radical.Avalonia.Messaging;
 using Radical.Avalonia.Regions;
 using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
@@ -260,16 +262,104 @@ namespace Radical.Avalonia
 
         void OnBootCompleted(IServiceProvider serviceProvider)
         {
-            if (bootstrapConfiguration.ShellViewType != null)
+            var resolver = serviceProvider.GetService<IViewResolver>();
+            var desktop = application.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime;
+
+            Window showSplash()
             {
-                var resolver = serviceProvider.GetService<IViewResolver>();
-                var mainView = (Window)resolver.GetView(bootstrapConfiguration.ShellViewType);
-                if (application.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+                var splashScreenConfiguration = bootstrapConfiguration.SplashScreenConfiguration;
+                var splashScreen = (Window)resolver.GetView(splashScreenConfiguration.SplashScreenViewType);
+                if (desktop != null)
                 {
-                    desktop.MainWindow = mainView;
+                    desktop.MainWindow = splashScreen;
                 }
 
-                mainView.Show();
+                splashScreen.WindowStartupLocation = splashScreenConfiguration.WindowStartupLocation;
+                if (splashScreenConfiguration.MinWidth.HasValue)
+                {
+                    splashScreen.MinWidth = splashScreenConfiguration.MinWidth.Value;
+                }
+
+                if (splashScreenConfiguration.MinHeight.HasValue)
+                {
+                    splashScreen.MinHeight = splashScreenConfiguration.MinHeight.Value;
+                }
+
+                splashScreen.WindowDecorations = splashScreenConfiguration.WindowDecorations;
+                splashScreen.SizeToContent = splashScreenConfiguration.SizeToContent;
+                switch (splashScreen.SizeToContent)
+                {
+                    case SizeToContent.Manual:
+                        splashScreen.Width = splashScreenConfiguration.Width;
+                        splashScreen.Height = splashScreenConfiguration.Height;
+                        break;
+
+                    case SizeToContent.Height:
+                        splashScreen.Width = splashScreenConfiguration.Width;
+                        break;
+
+                    case SizeToContent.Width:
+                        splashScreen.Height = splashScreenConfiguration.Height;
+                        break;
+                }
+
+                splashScreen.Show();
+
+                return splashScreen;
+            }
+
+            void showShell()
+            {
+                if (bootstrapConfiguration.ShellViewType != null)
+                {
+                    var mainView = (Window)resolver.GetView(bootstrapConfiguration.ShellViewType);
+                    if (desktop != null)
+                    {
+                        desktop.MainWindow = mainView;
+                    }
+
+                    mainView.Show();
+                }
+            }
+
+            if (bootstrapConfiguration.IsSplashScreenEnabled)
+            {
+                var splashScreen = showSplash();
+
+                async Task action()
+                {
+                    var sw = Stopwatch.StartNew();
+
+                    await bootstrapConfiguration.SplashScreenConfiguration.StartupAsyncWork(serviceProvider)
+                        .ConfigureAwait(true);
+
+                    sw.Stop();
+                    var elapsed = (int)sw.ElapsedMilliseconds;
+                    var remaining = bootstrapConfiguration.SplashScreenConfiguration.MinimumDelay - elapsed;
+                    if (remaining > 0)
+                    {
+                        await Task.Delay(remaining)
+                            .ConfigureAwait(true);
+                    }
+                }
+
+                var startup = Task.Run(action);
+
+                startup.ContinueWith(t =>
+                {
+                    if (t.IsFaulted)
+                    {
+                        bootstrapConfiguration.UnhandledExceptionHandler(t.Exception);
+                        throw t.Exception;
+                    }
+
+                    showShell();
+                    splashScreen.Close();
+                }, Dispatcher.UIThread.ToTaskScheduler());
+            }
+            else
+            {
+                showShell();
             }
         }
     }

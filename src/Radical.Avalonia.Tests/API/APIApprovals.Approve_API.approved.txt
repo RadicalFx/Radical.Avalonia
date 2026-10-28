@@ -95,6 +95,7 @@ namespace Radical.Avalonia.Bootstrap
         public Radical.Avalonia.Bootstrap.BootstrapConventions BootstrapConventions { get; }
         public void ConfigureServices(System.Action<Microsoft.Extensions.DependencyInjection.IServiceCollection> services) { }
         public void DisableAutoBoot() { }
+        public void EnableSplashScreen(Radical.Avalonia.Bootstrap.SplashScreenConfiguration config = null) { }
         public void ExposeServiceAsResource<TService>() { }
         public void ExposeServiceAsResource<TService, TView>()
             where TView : Avalonia.Controls.Control { }
@@ -220,6 +221,20 @@ namespace Radical.Avalonia.Bootstrap
         public bool AllowStartup { get; set; }
         public Radical.Avalonia.Bootstrap.SingletonApplicationScope Scope { get; }
         public string SingletonRegistrationKey { get; }
+    }
+    public class SplashScreenConfiguration
+    {
+        public SplashScreenConfiguration() { }
+        public double Height { get; set; }
+        public double? MinHeight { get; set; }
+        public double? MinWidth { get; set; }
+        public int MinimumDelay { get; set; }
+        public Avalonia.Controls.SizeToContent SizeToContent { get; set; }
+        public System.Type SplashScreenViewType { get; set; }
+        public System.Func<System.IServiceProvider, System.Threading.Tasks.Task> StartupAsyncWork { get; set; }
+        public double Width { get; set; }
+        public Avalonia.Controls.WindowDecorations WindowDecorations { get; set; }
+        public Avalonia.Controls.WindowStartupLocation WindowStartupLocation { get; set; }
     }
 }
 namespace Radical.Avalonia.ComponentModel
@@ -734,10 +749,60 @@ namespace Radical.Avalonia
 }
 namespace Radical.Avalonia.Regions
 {
+    public sealed class ContentPresenterRegion : Radical.Avalonia.Regions.ContentRegion<Avalonia.Controls.Presenters.ContentPresenter>
+    {
+        public ContentPresenterRegion() { }
+        public ContentPresenterRegion(string name) { }
+        protected override Avalonia.AvaloniaObject OnGetContent() { }
+        protected override void OnSetContent(Avalonia.AvaloniaObject view, System.ComponentModel.CancelEventArgs args) { }
+    }
+    public abstract class ContentRegion<T> : Radical.Avalonia.Regions.Region<T>, Radical.Avalonia.ComponentModel.IContentRegion, Radical.Avalonia.ComponentModel.IRegion
+        where T : Avalonia.Controls.Control
+    {
+        protected ContentRegion() { }
+        protected ContentRegion(string name) { }
+        public Avalonia.AvaloniaObject Content { get; set; }
+        protected virtual void OnContentSet(Avalonia.AvaloniaObject actual, Avalonia.AvaloniaObject previous) { }
+        protected abstract Avalonia.AvaloniaObject OnGetContent();
+        protected abstract void OnSetContent(Avalonia.AvaloniaObject view, System.ComponentModel.CancelEventArgs args);
+        public override void Shutdown() { }
+    }
+    public abstract class ElementsRegion<T> : Radical.Avalonia.Regions.Region<T>, Radical.Avalonia.ComponentModel.IElementsRegion, Radical.Avalonia.ComponentModel.IRegion
+        where T : Avalonia.Controls.Control
+    {
+        protected ElementsRegion() { }
+        protected ElementsRegion(string name) { }
+        public void Add(Avalonia.AvaloniaObject view) { }
+        public System.Collections.Generic.IEnumerable<TView> GetElements<TView>()
+            where TView : Avalonia.AvaloniaObject { }
+        protected abstract void OnAdd(Avalonia.AvaloniaObject view);
+        protected virtual void OnAdded(Avalonia.AvaloniaObject view) { }
+        protected abstract void OnRemove(Avalonia.AvaloniaObject view, Radical.Avalonia.Regions.RemoveReason reason);
+        protected virtual void OnRemoved(Avalonia.AvaloniaObject view, Radical.Avalonia.Regions.RemoveReason reason) { }
+        public void Remove(Avalonia.AvaloniaObject view) { }
+        protected void Remove(Avalonia.AvaloniaObject view, Radical.Avalonia.Regions.RemoveReason reason) { }
+        public override void Shutdown() { }
+    }
+    public sealed class PanelRegion : Radical.Avalonia.Regions.ElementsRegion<Avalonia.Controls.Panel>
+    {
+        public PanelRegion() { }
+        public PanelRegion(string name) { }
+        protected override void OnAdd(Avalonia.AvaloniaObject view) { }
+        protected override void OnRemove(Avalonia.AvaloniaObject view, Radical.Avalonia.Regions.RemoveReason reason) { }
+    }
     public static class RegionExtensions
     {
         public static void AddContentAsync(this Radical.Avalonia.ComponentModel.IElementsRegion region, System.Func<Avalonia.AvaloniaObject> viewFactory, int millisecondsDelay = 2000) { }
         public static void SetContentAsync(this Radical.Avalonia.ComponentModel.IContentRegion region, System.Func<Avalonia.AvaloniaObject> viewFactory, int millisecondsDelay = 2000) { }
+    }
+    public static class RegionHeaderedElement
+    {
+        public static readonly Avalonia.AttachedProperty<object> HeaderProperty;
+        public static readonly Avalonia.AttachedProperty<bool> PreserveOwningRegionDataContextProperty;
+        public static object GetHeader(Avalonia.AvaloniaObject element) { }
+        public static bool GetPreserveOwningRegionDataContext(Avalonia.AvaloniaObject element) { }
+        public static void SetHeader(Avalonia.AvaloniaObject element, object value) { }
+        public static void SetPreserveOwningRegionDataContext(Avalonia.AvaloniaObject element, bool value) { }
     }
     public class RegionManager : Radical.Avalonia.ComponentModel.IRegionManager
     {
@@ -774,6 +839,49 @@ namespace Radical.Avalonia.Regions
         public void UnregisterRegionManager(Avalonia.AvaloniaObject owner, Radical.Avalonia.ComponentModel.UnregisterBehavior behavior) { }
         public static Radical.Avalonia.ComponentModel.IRegion GetRegion(Avalonia.Controls.Control control) { }
         public static void SetRegion(Avalonia.Controls.Control control, Radical.Avalonia.ComponentModel.IRegion value) { }
+    }
+    public abstract class Region<T> : Avalonia.Markup.Xaml.MarkupExtension, Radical.Avalonia.ComponentModel.IRegion
+        where T : Avalonia.Controls.Control
+    {
+        protected readonly System.Diagnostics.TraceSource Logger;
+        protected Region() { }
+        protected Region(string name) { }
+        public int AsyncLoadDelay { get; set; }
+        protected T Element { get; }
+        public Avalonia.AvaloniaObject HostingView { get; }
+        public string Name { get; set; }
+        protected virtual Avalonia.AvaloniaObject FindHostingViewOf(Avalonia.Controls.Control fe) { }
+        protected virtual void NotifyClosedAndEnsureRelease(Avalonia.AvaloniaObject view) { }
+        protected virtual void OnElementChanged() { }
+        public override sealed object ProvideValue(System.IServiceProvider serviceProvider) { }
+        public abstract void Shutdown();
+    }
+    public enum RemoveReason
+    {
+        UserRequest = 0,
+        InternalRequest = 1,
+    }
+    public abstract class SwitchingElementsRegion<T> : Radical.Avalonia.Regions.ElementsRegion<T>, Radical.Avalonia.ComponentModel.IElementsRegion, Radical.Avalonia.ComponentModel.IRegion, Radical.Avalonia.ComponentModel.ISwitchingElementsRegion
+        where T : Avalonia.Controls.Control
+    {
+        protected SwitchingElementsRegion() { }
+        protected SwitchingElementsRegion(string name) { }
+        public abstract Avalonia.AvaloniaObject ActiveContent { get; }
+        public Avalonia.AvaloniaObject PreviousActiveContent { get; }
+        public event System.EventHandler<Radical.Avalonia.ComponentModel.ActiveContentChangedEventArgs> ActiveContentChanged;
+        public abstract void Activate(Avalonia.AvaloniaObject content);
+        protected virtual void OnActiveContentChanged() { }
+        protected virtual object TryGetViewModel(Avalonia.AvaloniaObject view) { }
+    }
+    public class TabControlRegion : Radical.Avalonia.Regions.SwitchingElementsRegion<Avalonia.Controls.TabControl>
+    {
+        public TabControlRegion() { }
+        public TabControlRegion(string name) { }
+        public override Avalonia.AvaloniaObject ActiveContent { get; }
+        public override void Activate(Avalonia.AvaloniaObject content) { }
+        protected override void OnAdd(Avalonia.AvaloniaObject view) { }
+        protected override void OnRemove(Avalonia.AvaloniaObject view, Radical.Avalonia.Regions.RemoveReason reason) { }
+        protected virtual object TryGetHeader(Avalonia.AvaloniaObject view) { }
     }
 }
 namespace Radical.Avalonia.Validation
