@@ -1,0 +1,12 @@
+﻿<Window x:Class="Radical.Avalonia.Tests.Regions.Presentation.RegionsHostView"
+        xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:rg="using:Radical.Avalonia.Regions">
+    <Grid RowDefinitions="*,*,*">
+        <Border Grid.Row="0">
+            <ContentPresenter x:Name="ContentHost" rg:RegionService.Region="{rg:ContentPresenterRegion Name=TestContentRegion}" />
+        </Border>
+        <StackPanel x:Name="PanelHost" Grid.Row="1" rg:RegionService.Region="{rg:PanelRegion Name=TestPanelRegion}" />
+        <TabControl x:Name="TabsHost" Grid.Row="2" rg:RegionService.Region="{rg:TabControlRegion Name=TestTabControlRegion}" />
+    </Grid>
+</Window>
