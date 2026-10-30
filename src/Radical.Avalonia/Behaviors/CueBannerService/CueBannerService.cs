@@ -6,19 +6,35 @@ using Avalonia.Controls;
 
 namespace Radical.Avalonia.Behaviors
 {
+    /// <summary>
+    /// Exposes an attached property to show a cue banner, as an adorner, on empty <see cref="TextBox"/> controls.
+    /// </summary>
     public static class CueBannerService
     {
         #region CueBanner Attached Property
 
+        /// <summary>
+        /// Identifies the CueBanner attached property: the content shown when the text box is empty.
+        /// </summary>
         public static readonly AttachedProperty<object> CueBannerProperty = AvaloniaProperty.RegisterAttached<TextBox, object>(
                                       "CueBanner",
                                       typeof(CueBannerService));
 
+        /// <summary>
+        /// Gets the cue banner content of the given text box.
+        /// </summary>
+        /// <param name="control">The text box.</param>
+        /// <returns>The cue banner content.</returns>
         public static object GetCueBanner(TextBox control)
         {
             return control.GetValue(CueBannerProperty);
         }
 
+        /// <summary>
+        /// Sets the cue banner content of the given text box.
+        /// </summary>
+        /// <param name="control">The text box.</param>
+        /// <param name="value">The cue banner content.</param>
         public static void SetCueBanner(TextBox control, object value)
         {
             control.SetValue(CueBannerProperty, value);

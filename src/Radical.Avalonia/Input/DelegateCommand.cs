@@ -30,8 +30,8 @@ namespace Radical.Avalonia.Input
         /// <summary>
         /// Used by the AutoCommandBinding...shuold be rewritten better :-)
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
+        /// <typeparam name="T">The type of the data.</typeparam>
+        /// <returns>The data associated with this command.</returns>
         internal T GetData<T>()
         {
             return (T)_data;
@@ -128,6 +128,8 @@ namespace Radical.Avalonia.Input
         /// <summary>
         /// Adds a new gesture to associate input bindings
         /// </summary>
+        /// <param name="gesture">The key gesture.</param>
+        /// <returns>This command instance, for chaining.</returns>
         public IDelegateCommand AddGesture(KeyGesture gesture)
         {
             if (inputBindings == null)
@@ -140,11 +142,22 @@ namespace Radical.Avalonia.Input
             return this;
         }
 
+        /// <summary>
+        /// Adds a new key gesture to associate input bindings.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <returns>This command instance, for chaining.</returns>
         public IDelegateCommand AddKeyGesture(Key key)
         {
             return AddKeyGesture(key, KeyModifiers.None);
         }
 
+        /// <summary>
+        /// Adds a new key gesture, with modifiers, to associate input bindings.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <param name="mk">The key modifiers.</param>
+        /// <returns>This command instance, for chaining.</returns>
         public IDelegateCommand AddKeyGesture(Key key, KeyModifiers mk)
         {
             if (inputBindings == null)

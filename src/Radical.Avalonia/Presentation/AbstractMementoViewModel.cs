@@ -59,7 +59,7 @@ namespace Radical.Avalonia.Presentation
         /// Determines if property validation should be skipped for the given property.
         /// </summary>
         /// <param name="propertyName">Name of the property.</param>
-        /// <returns></returns>
+        /// <returns><c>true</c> if the property validation should be skipped; otherwise, <c>false</c>.</returns>
         protected virtual bool SkipPropertyValidation(string propertyName)
         {
             var pi = GetType().GetProperty(propertyName);
@@ -92,6 +92,9 @@ namespace Radical.Avalonia.Presentation
         [SkipPropertyValidation]
         protected internal IValidationService ValidationService{ get; set; } = NullValidationService.Instance;
 
+        /// <summary>
+        /// Gets or sets the validation behavior used when none is specified. Defaults to <see cref="ValidationBehavior.TriggerValidationErrorsOnFailure"/>.
+        /// </summary>
         protected ValidationBehavior DefaultValidationBehavior { get; set; } = ValidationBehavior.TriggerValidationErrorsOnFailure;
 
         /// <summary>
@@ -113,11 +116,21 @@ namespace Radical.Avalonia.Presentation
 
         }
 
+        /// <summary>
+        /// Gets the display name of the given property.
+        /// </summary>
+        /// <param name="propertyName">The name of the property.</param>
+        /// <returns>The display name.</returns>
         protected string GetPropertyDisplayName(string propertyName)
         {
             return this.GetProperty(propertyName).GetDisplayName();
         }
 
+        /// <summary>
+        /// Validates the given property using the <see cref="DefaultValidationBehavior"/>.
+        /// </summary>
+        /// <param name="propertyName">The name of the property.</param>
+        /// <returns>The validation result and the validation errors.</returns>
         protected (bool IsValid, IEnumerable<ValidationError> Errors) ValidateProperty(string propertyName)
         {
             return ValidateProperty(propertyName, DefaultValidationBehavior);
@@ -379,6 +392,7 @@ namespace Radical.Avalonia.Presentation
         /// <summary>
         /// Moves the focus to.
         /// </summary>
+        /// <typeparam name="T">The type of the property.</typeparam>
         /// <param name="property">The property.</param>
         [System.Obsolete("This function has been obsoleted and will be removed in v3.0.0. Use MoveFocusTo(nameof(property)) instead")]
         protected virtual void MoveFocusTo<T>(Expression<Func<T>> property)
@@ -443,7 +457,7 @@ namespace Radical.Avalonia.Presentation
         /// Gets the errors.
         /// </summary>
         /// <param name="propertyName">Name of the property.</param>
-        /// <returns></returns>
+        /// <returns>The validation errors of the given property, or of the whole entity if no property is specified.</returns>
         public System.Collections.IEnumerable GetErrors(string propertyName)
         {
             if (String.IsNullOrEmpty(propertyName))

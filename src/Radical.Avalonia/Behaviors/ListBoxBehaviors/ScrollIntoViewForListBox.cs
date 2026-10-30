@@ -3,8 +3,12 @@ using Avalonia.Threading;
 
 namespace Radical.Avalonia.Behaviors
 {
+    /// <summary>
+    /// A behavior that scrolls the selected item of a <see cref="ListBox"/> into view when the selection changes.
+    /// </summary>
     public class ScrollIntoViewForListBox : RadicalBehavior<ListBox>
     {
+        /// <inheritdoc/>
         protected override void OnAttached()
         {
             base.OnAttached();
@@ -24,6 +28,7 @@ namespace Radical.Avalonia.Behaviors
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnDetaching()
         {
             base.OnDetaching();

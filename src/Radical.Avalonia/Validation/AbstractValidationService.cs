@@ -150,6 +150,7 @@ namespace Radical.Avalonia.Validation
             }
         }
 
+        /// <inheritdoc/>
         public bool MergeValidationErrors { get; set; }
     }
 }

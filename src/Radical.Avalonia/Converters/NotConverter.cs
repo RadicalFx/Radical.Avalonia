@@ -5,6 +5,9 @@ using Avalonia.Markup.Xaml;
 
 namespace Radical.Avalonia.Converters
 {
+    /// <summary>
+    /// Negates a <see cref="bool"/> value.
+    /// </summary>
     public sealed class NotConverter : AbstractSingletonConverter
     {
         //static WeakReference singleton = new WeakReference( null );
@@ -21,6 +24,7 @@ namespace Radical.Avalonia.Converters
         //    return converter;
         //}
 
+        /// <inheritdoc/>
         public override object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             Ensure.That(value).Named("value")
@@ -32,6 +36,7 @@ namespace Radical.Avalonia.Converters
             return !((bool)value);
         }
 
+        /// <inheritdoc/>
         public override object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             Ensure.That(value).Named("value").IsNotNull();

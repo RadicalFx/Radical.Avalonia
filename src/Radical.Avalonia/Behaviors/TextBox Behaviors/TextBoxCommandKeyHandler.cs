@@ -12,6 +12,9 @@ namespace Radical.Avalonia.Behaviors
         /// Executes the command, passing in a <see cref="TextBoxCommandArgs"/>, if the pressed
         /// key matches one of the command gestures, or is Enter when the command has no gestures.
         /// </summary>
+        /// <param name="cmd">The command to execute.</param>
+        /// <param name="prm">The command parameter.</param>
+        /// <param name="e">The key event data.</param>
         public static void Handle(ICommand cmd, object prm, KeyEventArgs e)
         {
             if (cmd != null && cmd.CanExecute(prm))

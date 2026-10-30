@@ -31,6 +31,7 @@ namespace Radical.Avalonia.Bootstrap
         /// <summary>
         /// Shows the shell, replacing the splash screen, if any.
         /// </summary>
+        /// <param name="view">The shell view.</param>
         public abstract void ShowShell(Control view);
 
         protected static void EnsureIsNotWindow(Control view)

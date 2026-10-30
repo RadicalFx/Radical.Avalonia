@@ -38,7 +38,7 @@ namespace Radical.Avalonia.Services
         /// <summary>
         /// Gets the view of the given type.
         /// </summary>
-        /// <param name="viewType"></param>
+        /// <param name="viewType">The type of the view.</param>
         /// <returns>
         /// The view instance.
         /// </returns>
@@ -63,9 +63,9 @@ namespace Radical.Avalonia.Services
         /// <summary>
         /// Gets the view.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T">The type of the view.</typeparam>
         /// <param name="viewModelInterceptor">The view model interceptor.</param>
-        /// <returns></returns>
+        /// <returns>The view instance.</returns>
         public T GetView<T>(Action<object> viewModelInterceptor) where T : AvaloniaObject
         {
             return (T)GetView(typeof(T), viewModelInterceptor);
@@ -77,7 +77,7 @@ namespace Radical.Avalonia.Services
         /// <typeparam name="TView">The type of the view.</typeparam>
         /// <typeparam name="TViewModel">The type of the view model.</typeparam>
         /// <param name="viewModelInterceptor">The view model interceptor.</param>
-        /// <returns></returns>
+        /// <returns>The view instance.</returns>
         public TView GetView<TView, TViewModel>(Action<TViewModel> viewModelInterceptor) where TView : AvaloniaObject
         {
             return (TView)GetView(typeof(TView), o =>
@@ -91,7 +91,7 @@ namespace Radical.Avalonia.Services
         /// </summary>
         /// <param name="viewType">Type of the view.</param>
         /// <param name="viewModelInterceptor">The view model interceptor.</param>
-        /// <returns></returns>
+        /// <returns>The view instance.</returns>
         public AvaloniaObject GetView(Type viewType, Action<object> viewModelInterceptor)
         {
             var view = (AvaloniaObject)container.GetService(viewType);

@@ -5,6 +5,9 @@ using Avalonia.Markup.Xaml;
 
 namespace Radical.Avalonia.Converters
 {
+    /// <summary>
+    /// Base class for converters that are also markup extensions, sharing a single instance per converter type.
+    /// </summary>
     public abstract class AbstractSingletonConverter : MarkupExtension, IValueConverter
     {
         static readonly Dictionary<Type, WeakReference> singletons = new Dictionary<Type, WeakReference>();

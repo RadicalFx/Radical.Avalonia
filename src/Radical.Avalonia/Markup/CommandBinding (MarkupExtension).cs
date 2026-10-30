@@ -8,6 +8,10 @@ using System;
 
 namespace Radical.Avalonia.Markup
 {
+    /// <summary>
+    /// A binding to a command that, once the target is loaded, registers the command key
+    /// bindings on the root element.
+    /// </summary>
     public class CommandBinding : BindingDecoratorBase
     {
         /// <summary>

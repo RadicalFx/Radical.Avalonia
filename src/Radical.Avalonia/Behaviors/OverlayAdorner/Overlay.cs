@@ -4,6 +4,9 @@ using Avalonia.Controls;
 
 namespace Radical.Avalonia.Behaviors
 {
+    /// <summary>
+    /// Exposes an attached property to show content in an adorner overlaying the control.
+    /// </summary>
     public static class Overlay
     {
         static Overlay()
@@ -11,16 +14,29 @@ namespace Radical.Avalonia.Behaviors
             ContentProperty.Changed.AddClassHandler<Control>(OnContentPropertyChanged);
         }
 
+        /// <summary>
+        /// Identifies the Content attached property: the content displayed in the overlay.
+        /// </summary>
         public static readonly AttachedProperty<object> ContentProperty = AvaloniaProperty.RegisterAttached<Control, object>(
                                       "Content",
                                       typeof(Overlay));
 
 
+        /// <summary>
+        /// Gets the overlay content of the given control.
+        /// </summary>
+        /// <param name="control">The control.</param>
+        /// <returns>The overlay content.</returns>
         public static object GetContent(Control control)
         {
             return control.GetValue(ContentProperty);
         }
 
+        /// <summary>
+        /// Sets the overlay content of the given control.
+        /// </summary>
+        /// <param name="control">The control.</param>
+        /// <param name="value">The overlay content.</param>
         public static void SetContent(Control control, object value)
         {
             control.SetValue(ContentProperty, value);

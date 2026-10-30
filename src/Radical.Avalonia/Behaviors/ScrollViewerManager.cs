@@ -6,6 +6,9 @@ using Avalonia.Interactivity;
 
 namespace Radical.Avalonia.Behaviors
 {
+    /// <summary>
+    /// Exposes attached properties to two-way bind the scroll offsets of a <see cref="ScrollViewer"/>.
+    /// </summary>
     public class ScrollViewerManager
     {
         static ScrollViewerManager()
@@ -72,17 +75,30 @@ namespace Radical.Avalonia.Behaviors
 
         #region Attached Property: HorizontalOffsetProperty
 
+        /// <summary>
+        /// Identifies the HorizontalOffset attached property. Defaults to -1, meaning not set.
+        /// </summary>
         public static readonly AttachedProperty<double> HorizontalOffsetProperty = AvaloniaProperty.RegisterAttached<ScrollViewer, double>(
                             "HorizontalOffset",
                             typeof(ScrollViewerManager),
                             -1,
                             defaultBindingMode: BindingMode.TwoWay);
 
+        /// <summary>
+        /// Gets the horizontal offset of the given scroll viewer.
+        /// </summary>
+        /// <param name="owner">The scroll viewer.</param>
+        /// <returns>The horizontal offset.</returns>
         public static double GetHorizontalOffset(ScrollViewer owner)
         {
             return owner.GetValue(HorizontalOffsetProperty);
         }
 
+        /// <summary>
+        /// Sets the horizontal offset of the given scroll viewer.
+        /// </summary>
+        /// <param name="owner">The scroll viewer.</param>
+        /// <param name="value">The horizontal offset.</param>
         public static void SetHorizontalOffset(ScrollViewer owner, double value)
         {
             owner.SetValue(HorizontalOffsetProperty, value);
@@ -103,17 +119,30 @@ namespace Radical.Avalonia.Behaviors
 
         #region Attached Property: VerticalOffsetProperty
 
+        /// <summary>
+        /// Identifies the VerticalOffset attached property. Defaults to -1, meaning not set.
+        /// </summary>
         public static readonly AttachedProperty<double> VerticalOffsetProperty = AvaloniaProperty.RegisterAttached<ScrollViewer, double>(
                             "VerticalOffset",
                             typeof(ScrollViewerManager),
                             -1,
                             defaultBindingMode: BindingMode.TwoWay);
 
+        /// <summary>
+        /// Gets the vertical offset of the given scroll viewer.
+        /// </summary>
+        /// <param name="owner">The scroll viewer.</param>
+        /// <returns>The vertical offset.</returns>
         public static double GetVerticalOffset(ScrollViewer owner)
         {
             return owner.GetValue(VerticalOffsetProperty);
         }
 
+        /// <summary>
+        /// Sets the vertical offset of the given scroll viewer.
+        /// </summary>
+        /// <param name="owner">The scroll viewer.</param>
+        /// <param name="value">The vertical offset.</param>
         public static void SetVerticalOffset(ScrollViewer owner, double value)
         {
             owner.SetValue(VerticalOffsetProperty, value);

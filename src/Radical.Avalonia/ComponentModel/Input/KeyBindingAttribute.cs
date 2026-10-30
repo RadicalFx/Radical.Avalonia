@@ -3,6 +3,9 @@ using System;
 
 namespace Radical.Avalonia.ComponentModel
 {
+    /// <summary>
+    /// Defines a key binding for a command generated from the decorated method.
+    /// </summary>
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
     public class KeyBindingAttribute : Attribute
     {
