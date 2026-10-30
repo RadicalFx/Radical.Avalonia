@@ -1,0 +1,21 @@
+<UserControl x:Class="Radical.Avalonia.Tests.Behaviors.AdornersView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:i="using:Avalonia.Xaml.Interactivity"
+             xmlns:rb="using:Radical.Avalonia.Behaviors"
+             xmlns:rc="using:Radical.Avalonia.Converters"
+             xmlns:local="using:Radical.Avalonia.Tests.Behaviors"
+             x:DataType="local:AdornersViewModel">
+    <StackPanel>
+        <Border x:Name="Busy" Height="50"
+                rb:BusyStatusManager.Status="{Binding IsBusy, Converter={rc:BooleanBusyStatusConverter}}"
+                rb:BusyStatusManager.Content="Loading..." />
+        <Border x:Name="Overlaid" Height="50">
+            <i:Interaction.Behaviors>
+                <rb:OverlayBehavior Content="Overlay" IsVisible="{Binding IsOverlayVisible}" DisableAdornedElement="True" />
+            </i:Interaction.Behaviors>
+        </Border>
+        <TextBox x:Name="Search" rb:CueBannerService.CueBanner="Search..." />
+        <ListBox x:Name="Items" Height="100" ItemsSource="{Binding Items}" rb:EmptyPlaceHolderService.Content="No items" />
+    </StackPanel>
+</UserControl>
