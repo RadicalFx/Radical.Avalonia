@@ -62,6 +62,62 @@ namespace Radical.Avalonia.Behaviors
     {
         public static bool GetIsInDesignMode() { }
     }
+    public static class DragDropManager
+    {
+        public static readonly Avalonia.AttachedProperty<object> DataObjectProperty;
+        public static readonly Avalonia.AttachedProperty<string> DataObjectTypeProperty;
+        public static readonly Avalonia.AttachedProperty<object> DropTargetProperty;
+        public static readonly Avalonia.AttachedProperty<bool> IsDraggingProperty;
+        public static readonly Avalonia.AttachedProperty<System.Windows.Input.ICommand> OnDragEnterCommandProperty;
+        public static readonly Avalonia.AttachedProperty<System.Windows.Input.ICommand> OnDragLeaveCommandProperty;
+        public static readonly Avalonia.AttachedProperty<System.Windows.Input.ICommand> OnDropCommandProperty;
+        public static Avalonia.Input.DataFormat<object> GetDataFormat(System.Type type) { }
+        public static Avalonia.Input.DataFormat<object> GetDataFormat(string dataObjectType) { }
+        public static object GetDataObject(Avalonia.Controls.Control owner) { }
+        public static string GetDataObjectType(Avalonia.Controls.Control owner) { }
+        public static object GetDropTarget(Avalonia.Controls.Control owner) { }
+        public static bool GetIsDragging(Avalonia.Controls.Control owner) { }
+        public static System.Windows.Input.ICommand GetOnDragEnterCommand(Avalonia.Controls.Control owner) { }
+        public static System.Windows.Input.ICommand GetOnDragLeaveCommand(Avalonia.Controls.Control owner) { }
+        public static System.Windows.Input.ICommand GetOnDropCommand(Avalonia.Controls.Control owner) { }
+        public static void SetDataObject(Avalonia.Controls.Control owner, object value) { }
+        public static void SetDataObjectType(Avalonia.Controls.Control owner, string value) { }
+        public static void SetDropTarget(Avalonia.Controls.Control owner, object value) { }
+        public static void SetOnDragEnterCommand(Avalonia.Controls.Control owner, System.Windows.Input.ICommand value) { }
+        public static void SetOnDragLeaveCommand(Avalonia.Controls.Control owner, System.Windows.Input.ICommand value) { }
+        public static void SetOnDropCommand(Avalonia.Controls.Control owner, System.Windows.Input.ICommand value) { }
+    }
+    public abstract class DragDropOperationArgs : System.EventArgs
+    {
+        protected DragDropOperationArgs(Avalonia.Input.IDataTransfer data, Avalonia.Input.KeyModifiers keyStates, object dropTarget) { }
+        public Avalonia.Input.IDataTransfer Data { get; }
+        public object DropTarget { get; }
+        public Avalonia.Input.KeyModifiers KeyStates { get; }
+        public object GetData(System.Type format) { }
+        public object GetData(string format) { }
+    }
+    public class DragEnterArgs : Radical.Avalonia.Behaviors.DragDropOperationArgs
+    {
+        public DragEnterArgs(Avalonia.Input.IDataTransfer data, Avalonia.Input.KeyModifiers keyStates, object dropTarget, Avalonia.Input.DragDropEffects allowedEffects) { }
+        public Avalonia.Input.DragDropEffects AllowedEffects { get; }
+    }
+    public class DragLeaveArgs : Radical.Avalonia.Behaviors.DragDropOperationArgs
+    {
+        public DragLeaveArgs(Avalonia.Input.IDataTransfer data, Avalonia.Input.KeyModifiers keyStates, object dropTarget, Avalonia.Input.DragDropEffects allowedEffects) { }
+        public Avalonia.Input.DragDropEffects AllowedEffects { get; }
+    }
+    public class DragOverArgs : Radical.Avalonia.Behaviors.DragDropOperationArgs
+    {
+        public DragOverArgs(Avalonia.Input.IDataTransfer data, Avalonia.Input.KeyModifiers keyStates, object dropTarget, Avalonia.Input.DragDropEffects allowedEffects, Avalonia.Point position) { }
+        public Avalonia.Input.DragDropEffects AllowedEffects { get; }
+        public Avalonia.Input.DragDropEffects Effects { get; set; }
+        public Avalonia.Point Position { get; }
+    }
+    public class DropArgs : Radical.Avalonia.Behaviors.DragDropOperationArgs
+    {
+        public DropArgs(Avalonia.Input.IDataTransfer data, Avalonia.Input.KeyModifiers keyStates, object dropTarget, Avalonia.Point position) { }
+        public Avalonia.Point Position { get; }
+    }
     public static class EmptyPlaceHolderService
     {
         public static readonly Avalonia.AttachedProperty<object> ContentProperty;
