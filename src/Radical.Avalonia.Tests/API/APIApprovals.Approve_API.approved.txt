@@ -42,9 +42,30 @@ namespace Radical.Avalonia.Behaviors
     {
         public static bool GetIsInDesignMode() { }
     }
+    public class Focus : Radical.Avalonia.Behaviors.RadicalBehavior<Avalonia.Controls.Control>
+    {
+        public static readonly Avalonia.StyledProperty<string> ControlledByProperty;
+        public Focus() { }
+        public string ControlledBy { get; set; }
+        public string UsingKey { get; set; }
+        protected override void OnAttached() { }
+        protected override void OnDetaching() { }
+    }
     public class FrameworkElementLifecycleNotificationsBehavior : Radical.Avalonia.Behaviors.RadicalBehavior<Avalonia.Controls.Control>
     {
         public FrameworkElementLifecycleNotificationsBehavior(Radical.ComponentModel.Messaging.IMessageBroker broker, Radical.Avalonia.ComponentModel.IConventionsHandler conventions) { }
+        protected override void OnAttached() { }
+        protected override void OnDetaching() { }
+    }
+    public class Handle : Radical.Avalonia.Behaviors.RadicalBehavior<Avalonia.Controls.Control>
+    {
+        public static readonly Avalonia.StyledProperty<string> PassingInProperty;
+        public static readonly Avalonia.StyledProperty<Avalonia.Interactivity.RoutedEvent> RoutedEventProperty;
+        public static readonly Avalonia.StyledProperty<System.Windows.Input.ICommand> WithCommandProperty;
+        public Handle() { }
+        public string PassingIn { get; set; }
+        public Avalonia.Interactivity.RoutedEvent RoutedEvent { get; set; }
+        public System.Windows.Input.ICommand WithCommand { get; set; }
         protected override void OnAttached() { }
         protected override void OnDetaching() { }
     }
@@ -53,6 +74,22 @@ namespace Radical.Avalonia.Behaviors
         event System.EventHandler AttachedObjectLoaded;
         T GetAttachedObject<T>()
             where T : Avalonia.Controls.Control;
+    }
+    public class MouseManager
+    {
+        public static readonly Avalonia.AttachedProperty<Avalonia.Point> OnContextMenuOpeningProperty;
+        public static readonly Avalonia.AttachedProperty<Avalonia.Point> OnMouseDoubleClickProperty;
+        public static readonly Avalonia.AttachedProperty<Avalonia.Point> OnMouseLeftButtonDownProperty;
+        public static readonly Avalonia.AttachedProperty<Avalonia.Point> OnMouseRightButtonDownProperty;
+        public MouseManager() { }
+        public static Avalonia.Point GetOnContextMenuOpening(Avalonia.Controls.Control owner) { }
+        public static Avalonia.Point GetOnMouseDoubleClick(Avalonia.Controls.Control owner) { }
+        public static Avalonia.Point GetOnMouseLeftButtonDown(Avalonia.Controls.Control owner) { }
+        public static Avalonia.Point GetOnMouseRightButtonDown(Avalonia.Controls.Control owner) { }
+        public static void SetOnContextMenuOpening(Avalonia.Controls.Control owner, Avalonia.Point point) { }
+        public static void SetOnMouseDoubleClick(Avalonia.Controls.Control owner, Avalonia.Point point) { }
+        public static void SetOnMouseLeftButtonDown(Avalonia.Controls.Control owner, Avalonia.Point point) { }
+        public static void SetOnMouseRightButtonDown(Avalonia.Controls.Control owner, Avalonia.Point point) { }
     }
     public abstract class RadicalBehavior<T> : Avalonia.Xaml.Interactivity.Behavior<T>, Radical.Avalonia.Behaviors.INotifyAttachedOjectLoaded
         where T : Avalonia.Controls.Control
@@ -63,6 +100,51 @@ namespace Radical.Avalonia.Behaviors
             where T : Avalonia.Controls.Control { }
         protected virtual void OnAttachedObjectLoaded() { }
         protected override void OnLoaded() { }
+    }
+    public class ScrollIntoViewForListBox : Radical.Avalonia.Behaviors.RadicalBehavior<Avalonia.Controls.ListBox>
+    {
+        public ScrollIntoViewForListBox() { }
+        protected override void OnAttached() { }
+        protected override void OnDetaching() { }
+    }
+    public class ScrollViewerManager
+    {
+        public static readonly Avalonia.AttachedProperty<double> HorizontalOffsetProperty;
+        public static readonly Avalonia.AttachedProperty<double> VerticalOffsetProperty;
+        public ScrollViewerManager() { }
+        public static double GetHorizontalOffset(Avalonia.Controls.ScrollViewer owner) { }
+        public static double GetVerticalOffset(Avalonia.Controls.ScrollViewer owner) { }
+        public static void SetHorizontalOffset(Avalonia.Controls.ScrollViewer owner, double value) { }
+        public static void SetVerticalOffset(Avalonia.Controls.ScrollViewer owner, double value) { }
+    }
+    public class TextBoxCommandArgs : System.EventArgs
+    {
+        public TextBoxCommandArgs(Avalonia.Input.Key key, Avalonia.Input.KeyModifiers modifiers, object commandParameter) { }
+        public object CommandParameter { get; }
+        public Avalonia.Input.Key Key { get; }
+        public Avalonia.Input.KeyModifiers Modifiers { get; }
+    }
+    public class TextBoxCommandBehavior : Radical.Avalonia.Behaviors.RadicalBehavior<Avalonia.Controls.TextBox>
+    {
+        public static readonly Avalonia.StyledProperty<System.Windows.Input.ICommand> CommandProperty;
+        public TextBoxCommandBehavior() { }
+        public System.Windows.Input.ICommand Command { get; set; }
+        public object CommandParameter { get; set; }
+        public Avalonia.Input.IInputElement CommandTarget { get; }
+        protected override void OnAttached() { }
+        protected override void OnDetaching() { }
+    }
+    public static class TextBoxManager
+    {
+        public static readonly Avalonia.AttachedProperty<bool> AutoSelectTextProperty;
+        public static readonly Avalonia.AttachedProperty<object> CommandParameterProperty;
+        public static readonly Avalonia.AttachedProperty<System.Windows.Input.ICommand> CommandProperty;
+        public static bool GetAutoSelectText(Avalonia.Controls.TextBox owner) { }
+        public static System.Windows.Input.ICommand GetCommand(Avalonia.AvaloniaObject owner) { }
+        public static object GetCommandParameter(Avalonia.AvaloniaObject owner) { }
+        public static void SetAutoSelectText(Avalonia.Controls.TextBox owner, bool value) { }
+        public static void SetCommand(Avalonia.AvaloniaObject owner, System.Windows.Input.ICommand value) { }
+        public static void SetCommandParameter(Avalonia.AvaloniaObject owner, object value) { }
     }
     public class WindowLifecycleNotificationsBehavior : Radical.Avalonia.Behaviors.RadicalBehavior<Avalonia.Controls.Window>
     {
