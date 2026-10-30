@@ -15,7 +15,7 @@ namespace Radical.Avalonia.Converters
         /// </summary>
         /// <param name="variable">Flags enumeration to check</param>
         /// <param name="value">Flag to check for</param>
-        /// <returns></returns>
+        /// <returns><c>true</c> if the flag is set; otherwise, <c>false</c>.</returns>
         public bool HasFlag(Enum variable, Enum value)
         {
             if (variable == null)

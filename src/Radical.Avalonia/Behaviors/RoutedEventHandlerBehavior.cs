@@ -7,13 +7,22 @@ using Avalonia.Interactivity;
 
 namespace Radical.Avalonia.Behaviors
 {
+    /// <summary>
+    /// A behavior that handles a routed event executing a command.
+    /// </summary>
     public class Handle : RadicalBehavior<Control>
     {
         #region Styled Property: RoutedEvent
 
+        /// <summary>
+        /// Identifies the <see cref="RoutedEvent"/> styled property.
+        /// </summary>
         public static readonly StyledProperty<RoutedEvent> RoutedEventProperty = AvaloniaProperty.Register<Handle, RoutedEvent>(
             "RoutedEvent");
 
+        /// <summary>
+        /// Gets or sets the routed event to handle.
+        /// </summary>
         public RoutedEvent RoutedEvent
         {
             get { return GetValue(RoutedEventProperty); }
@@ -24,9 +33,15 @@ namespace Radical.Avalonia.Behaviors
 
         #region Styled Property: Command
 
+        /// <summary>
+        /// Identifies the <see cref="WithCommand"/> styled property.
+        /// </summary>
         public static readonly StyledProperty<ICommand> WithCommandProperty = AvaloniaProperty.Register<Handle, ICommand>(
             "WithCommand");
 
+        /// <summary>
+        /// Gets or sets the command executed when the routed event is raised.
+        /// </summary>
         public ICommand WithCommand
         {
             get { return GetValue(WithCommandProperty); }
@@ -37,9 +52,16 @@ namespace Radical.Avalonia.Behaviors
 
         #region Styled Property: PassingIn
 
+        /// <summary>
+        /// Identifies the <see cref="PassingIn"/> styled property.
+        /// </summary>
         public static readonly StyledProperty<string> PassingInProperty = AvaloniaProperty.Register<Handle, string>(
             "PassingIn");
 
+        /// <summary>
+        /// Gets or sets the command parameter: <c>$args</c>, <c>$this</c>, <c>$source</c>, or
+        /// <c>$originalSource</c>, optionally followed by a property name, e.g. <c>$args.Key</c>.
+        /// </summary>
         public string PassingIn
         {
             get { return GetValue(PassingInProperty); }
@@ -50,6 +72,9 @@ namespace Radical.Avalonia.Behaviors
 
         readonly EventHandler<RoutedEventArgs> handler = null;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Handle"/> class.
+        /// </summary>
         public Handle()
         {
             handler = (s, e) =>
@@ -113,6 +138,7 @@ namespace Radical.Avalonia.Behaviors
             };
         }
 
+        /// <inheritdoc/>
         protected override void OnAttached()
         {
             base.OnAttached();
@@ -120,6 +146,7 @@ namespace Radical.Avalonia.Behaviors
             AssociatedObject.AddHandler(RoutedEvent, handler);
         }
 
+        /// <inheritdoc/>
         protected override void OnDetaching()
         {
             base.OnDetaching();

@@ -100,6 +100,7 @@ namespace Radical.Avalonia.Bootstrap
         /// <summary>
         /// Exposes the given service type as resource in the App resources.
         /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
         public void ExposeServiceAsResource<TService>()
         {
             ExposeServiceAsResource(typeof(TService), Application.Current.GetType());
@@ -110,7 +111,6 @@ namespace Radical.Avalonia.Bootstrap
         /// </summary>
         /// <typeparam name="TService">The type of the service.</typeparam>
         /// <typeparam name="TView">The type of the view.</typeparam>
-        /// <returns></returns>
         public void ExposeServiceAsResource<TService, TView>() where TView : Control
         {
             ExposeServiceAsResource(typeof(TService), typeof(TView));
@@ -134,6 +134,7 @@ namespace Radical.Avalonia.Bootstrap
         /// <summary>
         /// Defines the Culture to use.
         /// </summary>
+        /// <param name="cultureConfig">A delegate that, given the service provider, returns the culture to use.</param>
         public void UseCulture(Func<IServiceProvider, CultureInfo> cultureConfig)
         {
             CultureConfig = cultureConfig;
@@ -142,6 +143,7 @@ namespace Radical.Avalonia.Bootstrap
         /// <summary>
         /// Defines the UICulture to use.
         /// </summary>
+        /// <param name="uiCultureConfig">A delegate that, given the service provider, returns the UI culture to use.</param>
         public void UseUICulture(Func<IServiceProvider, CultureInfo> uiCultureConfig)
         {
             UICultureConfig = uiCultureConfig;
@@ -150,6 +152,7 @@ namespace Radical.Avalonia.Bootstrap
         /// <summary>
         /// Defines the type to use as main/shell view.
         /// </summary>
+        /// <typeparam name="TShellType">The type of the shell view.</typeparam>
         /// <remarks>
         /// On desktop a shell that is not a <see cref="Window"/> is hosted in a new window.
         /// On single-view platforms (mobile and browser) the shell is the main view and cannot be a <see cref="Window"/>:
@@ -163,6 +166,7 @@ namespace Radical.Avalonia.Bootstrap
         /// <summary>
         /// Defines the type to use as main/shell view.
         /// </summary>
+        /// <param name="shellViewType">The type of the shell view.</param>
         /// <remarks>
         /// On desktop a shell that is not a <see cref="Window"/> is hosted in a new window.
         /// On single-view platforms (mobile and browser) the shell is the main view and cannot be a <see cref="Window"/>:
@@ -181,6 +185,7 @@ namespace Radical.Avalonia.Bootstrap
         /// <summary>
         /// Override the default shutdown mode.
         /// </summary>
+        /// <param name="shutdownMode">The shutdown mode to use.</param>
         public void OverrideShutdownMode(ShutdownMode shutdownMode)
         {
             ShutdownMode = shutdownMode;
@@ -189,6 +194,7 @@ namespace Radical.Avalonia.Bootstrap
         /// <summary>
         /// Registers this application as singleton locally at the user session level.
         /// </summary>
+        /// <param name="registrationKey">The key that identifies the application.</param>
         public void RegisterAsLocalSingleton(string registrationKey)
         {
             SingletonRegistrationKey = registrationKey;
@@ -198,6 +204,7 @@ namespace Radical.Avalonia.Bootstrap
         /// <summary>
         /// Registers this application as singleton globally at the machine level.
         /// </summary>
+        /// <param name="registrationKey">The key that identifies the application.</param>
         public void RegisterAsGlobalSingleton(string registrationKey)
         {
             SingletonRegistrationKey = registrationKey;
@@ -207,6 +214,7 @@ namespace Radical.Avalonia.Bootstrap
         /// <summary>
         /// Called when a singleton application startup.
         /// </summary>
+        /// <param name="onSingletonApplicationStartup">The handler invoked when the singleton application starts.</param>
         public void OnSingletonApplicationStartup(Action<SingletonApplicationStartupArgs> onSingletonApplicationStartup)
         {
             Ensure.That(onSingletonApplicationStartup)
@@ -219,6 +227,7 @@ namespace Radical.Avalonia.Bootstrap
         /// <summary>
         /// Called when the application is booting.
         /// </summary>
+        /// <param name="bootingHandler">The handler invoked when the application is booting.</param>
         public void OnBooting(Action<IServiceProvider> bootingHandler)
         {
             Ensure.That(bootingHandler)
@@ -231,6 +240,7 @@ namespace Radical.Avalonia.Bootstrap
         /// <summary>
         /// Called when the application is shutting down.
         /// </summary>
+        /// <param name="shutingDownHandler">The handler invoked when the application is shutting down.</param>
         public void OnShuttingDown(Action<ApplicationShuttingDownArgs> shutingDownHandler)
         {
             Ensure.That(shutingDownHandler)
@@ -251,6 +261,7 @@ namespace Radical.Avalonia.Bootstrap
         /// <summary>
         /// Enables splash screen support.
         /// </summary>
+        /// <param name="config">The splash screen configuration, or <c>null</c> to use the default one.</param>
         public void EnableSplashScreen(SplashScreenConfiguration config = null)
         {
             if (config != null)
@@ -264,6 +275,7 @@ namespace Radical.Avalonia.Bootstrap
         /// <summary>
         /// Called when the service provider is created.
         /// </summary>
+        /// <param name="onServiceProviderCreatedHandler">The handler invoked when the service provider is created.</param>
         public void OnServiceProviderCreated(Action<IServiceProvider> onServiceProviderCreatedHandler)
         {
             Ensure.That(onServiceProviderCreatedHandler)
@@ -276,6 +288,7 @@ namespace Radical.Avalonia.Bootstrap
         /// <summary>
         /// Allows to inject an handler for not handled exception(s).
         /// </summary>
+        /// <param name="unhandledExceptionHandler">The handler invoked when an unhandled exception occurs.</param>
         public void OnUnhandledException(Action<Exception> unhandledExceptionHandler)
         {
             Ensure.That(unhandledExceptionHandler)
@@ -288,6 +301,7 @@ namespace Radical.Avalonia.Bootstrap
         /// <summary>
         /// Called when the boot process is completed.
         /// </summary>
+        /// <param name="bootCompletedHandler">The handler invoked when the boot process is completed.</param>
         public void OnBootCompleted(Action<IServiceProvider> bootCompletedHandler)
         {
             Ensure.That(bootCompletedHandler)

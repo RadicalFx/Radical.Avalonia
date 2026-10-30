@@ -9,6 +9,9 @@ using Avalonia.Media.Imaging;
 
 namespace Radical.Avalonia.Converters
 {
+    /// <summary>
+    /// Converts a byte array to a <see cref="Bitmap"/>.
+    /// </summary>
     public class BinaryImageConverter : AbstractSingletonConverter
     {
         static readonly TraceSource logger = new TraceSource(typeof(BinaryImageConverter).FullName);

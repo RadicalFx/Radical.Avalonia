@@ -56,7 +56,7 @@ namespace Radical.Avalonia.Regions
         /// Tries the get header.
         /// </summary>
         /// <param name="view">The view.</param>
-        /// <returns></returns>
+        /// <returns>The header of the view.</returns>
         protected virtual object TryGetHeader( AvaloniaObject view )
         {
             return RegionHeaderedElement.GetHeader( view );

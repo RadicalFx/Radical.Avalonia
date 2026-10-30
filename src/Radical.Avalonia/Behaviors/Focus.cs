@@ -7,7 +7,8 @@ using Avalonia.Interactivity;
 namespace Radical.Avalonia.Behaviors
 {
     /// <summary>
-    ///
+    /// Moves the keyboard focus to the associated control when <see cref="ControlledBy"/> matches
+    /// <see cref="UsingKey"/>, and sets <see cref="ControlledBy"/> when the control gets focus.
     /// </summary>
     public class Focus : RadicalBehavior<Control>
     {

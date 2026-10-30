@@ -4,6 +4,9 @@ using System;
 
 namespace Radical.Avalonia.Converters
 {
+    /// <summary>
+    /// Converts a <see cref="bool"/> to a <see cref="BusyStatus"/>, and back: <c>true</c> is <see cref="BusyStatus.Busy"/>.
+    /// </summary>
     public sealed class BooleanBusyStatusConverter : AbstractSingletonConverter
     {
         /// <summary>

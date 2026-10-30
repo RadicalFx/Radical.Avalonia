@@ -72,16 +72,30 @@ namespace Radical.Avalonia.Behaviors
 
         #region Attached Property: DropTarget
 
+        /// <summary>
+        /// Identifies the DropTarget attached property: the object passed to the drop
+        /// commands as the target of the drag and drop operation.
+        /// </summary>
         public static readonly AttachedProperty<object> DropTargetProperty = AvaloniaProperty.RegisterAttached<Control, object>(
                                       "DropTarget",
                                       typeof(DragDropManager));
 
 
+        /// <summary>
+        /// Gets the drop target of the given control.
+        /// </summary>
+        /// <param name="owner">The control.</param>
+        /// <returns>The drop target.</returns>
         public static object GetDropTarget(Control owner)
         {
             return owner.GetValue(DropTargetProperty);
         }
 
+        /// <summary>
+        /// Sets the drop target of the given control.
+        /// </summary>
+        /// <param name="owner">The control.</param>
+        /// <param name="value">The drop target.</param>
         public static void SetDropTarget(Control owner, object value)
         {
             owner.SetValue(DropTargetProperty, value);
@@ -91,16 +105,30 @@ namespace Radical.Avalonia.Behaviors
 
         #region Attached Property: DataObjectType
 
+        /// <summary>
+        /// Identifies the DataObjectType attached property: the name of the data format used
+        /// to drag the data object. When not set the full name of the data object type is used.
+        /// </summary>
         public static readonly AttachedProperty<string> DataObjectTypeProperty = AvaloniaProperty.RegisterAttached<Control, string>(
                                       "DataObjectType",
                                       typeof(DragDropManager));
 
 
+        /// <summary>
+        /// Gets the data object type of the given control.
+        /// </summary>
+        /// <param name="owner">The control.</param>
+        /// <returns>The data object type.</returns>
         public static string GetDataObjectType(Control owner)
         {
             return owner.GetValue(DataObjectTypeProperty);
         }
 
+        /// <summary>
+        /// Sets the data object type of the given control.
+        /// </summary>
+        /// <param name="owner">The control.</param>
+        /// <param name="value">The data object type.</param>
         public static void SetDataObjectType(Control owner, string value)
         {
             owner.SetValue(DataObjectTypeProperty, value);
@@ -110,16 +138,30 @@ namespace Radical.Avalonia.Behaviors
 
         #region Attached Property: DataObject
 
+        /// <summary>
+        /// Identifies the DataObject attached property: the object dragged when a drag
+        /// operation starts from the control. Setting it makes the control a drag source.
+        /// </summary>
         public static readonly AttachedProperty<object> DataObjectProperty = AvaloniaProperty.RegisterAttached<Control, object>(
                                       "DataObject",
                                       typeof(DragDropManager));
 
 
+        /// <summary>
+        /// Gets the data object of the given control.
+        /// </summary>
+        /// <param name="owner">The control.</param>
+        /// <returns>The data object.</returns>
         public static object GetDataObject(Control owner)
         {
             return owner.GetValue(DataObjectProperty);
         }
 
+        /// <summary>
+        /// Sets the data object of the given control.
+        /// </summary>
+        /// <param name="owner">The control.</param>
+        /// <param name="value">The data object.</param>
         public static void SetDataObject(Control owner, object value)
         {
             owner.SetValue(DataObjectProperty, value);
@@ -214,6 +256,10 @@ namespace Radical.Avalonia.Behaviors
 
         #region Attached Property: IsDragging
 
+        /// <summary>
+        /// Identifies the read-only IsDragging attached property: <c>true</c> while a drag
+        /// operation started from the control is in progress.
+        /// </summary>
         public static readonly AttachedProperty<bool> IsDraggingProperty = AvaloniaProperty.RegisterAttached<Control, bool>(
                                       "IsDragging",
                                       typeof(DragDropManager));
@@ -223,7 +269,7 @@ namespace Radical.Avalonia.Behaviors
         /// Gets the is dragging.
         /// </summary>
         /// <param name="owner">The owner.</param>
-        /// <returns></returns>
+        /// <returns><c>true</c> if a drag operation started from the control is in progress; otherwise, <c>false</c>.</returns>
         public static bool GetIsDragging(Control owner)
         {
             return owner.GetValue(IsDraggingProperty);
@@ -250,16 +296,30 @@ namespace Radical.Avalonia.Behaviors
 
         #region Attached Property: OnDropCommand
 
+        /// <summary>
+        /// Identifies the OnDropCommand attached property: the command executed, with a
+        /// <see cref="DropArgs"/> parameter, when data is dropped on the control. Setting it makes the control a drop target.
+        /// </summary>
         public static readonly AttachedProperty<ICommand> OnDropCommandProperty = AvaloniaProperty.RegisterAttached<Control, ICommand>(
                                       "OnDropCommand",
                                       typeof(DragDropManager));
 
 
+        /// <summary>
+        /// Gets the drop command of the given control.
+        /// </summary>
+        /// <param name="owner">The control.</param>
+        /// <returns>The drop command.</returns>
         public static ICommand GetOnDropCommand(Control owner)
         {
             return owner.GetValue(OnDropCommandProperty);
         }
 
+        /// <summary>
+        /// Sets the drop command of the given control.
+        /// </summary>
+        /// <param name="owner">The control.</param>
+        /// <param name="value">The drop command.</param>
         public static void SetOnDropCommand(Control owner, ICommand value)
         {
             owner.SetValue(OnDropCommandProperty, value);
@@ -269,16 +329,30 @@ namespace Radical.Avalonia.Behaviors
 
         #region Attached Property: OnDragEnterCommand
 
+        /// <summary>
+        /// Identifies the OnDragEnterCommand attached property: the command executed, with a
+        /// <see cref="DragEnterArgs"/> parameter, when a drag operation enters the control.
+        /// </summary>
         public static readonly AttachedProperty<ICommand> OnDragEnterCommandProperty = AvaloniaProperty.RegisterAttached<Control, ICommand>(
                                       "OnDragEnterCommand",
                                       typeof(DragDropManager));
 
 
+        /// <summary>
+        /// Gets the drag enter command of the given control.
+        /// </summary>
+        /// <param name="owner">The control.</param>
+        /// <returns>The drag enter command.</returns>
         public static ICommand GetOnDragEnterCommand(Control owner)
         {
             return owner.GetValue(OnDragEnterCommandProperty);
         }
 
+        /// <summary>
+        /// Sets the drag enter command of the given control.
+        /// </summary>
+        /// <param name="owner">The control.</param>
+        /// <param name="value">The drag enter command.</param>
         public static void SetOnDragEnterCommand(Control owner, ICommand value)
         {
             owner.SetValue(OnDragEnterCommandProperty, value);
@@ -288,16 +362,30 @@ namespace Radical.Avalonia.Behaviors
 
         #region Attached Property: OnDragLeaveCommand
 
+        /// <summary>
+        /// Identifies the OnDragLeaveCommand attached property: the command executed, with a
+        /// <see cref="DragLeaveArgs"/> parameter, when a drag operation leaves the control.
+        /// </summary>
         public static readonly AttachedProperty<ICommand> OnDragLeaveCommandProperty = AvaloniaProperty.RegisterAttached<Control, ICommand>(
                                       "OnDragLeaveCommand",
                                       typeof(DragDropManager));
 
 
+        /// <summary>
+        /// Gets the drag leave command of the given control.
+        /// </summary>
+        /// <param name="owner">The control.</param>
+        /// <returns>The drag leave command.</returns>
         public static ICommand GetOnDragLeaveCommand(Control owner)
         {
             return owner.GetValue(OnDragLeaveCommandProperty);
         }
 
+        /// <summary>
+        /// Sets the drag leave command of the given control.
+        /// </summary>
+        /// <param name="owner">The control.</param>
+        /// <param name="value">The drag leave command.</param>
         public static void SetOnDragLeaveCommand(Control owner, ICommand value)
         {
             owner.SetValue(OnDragLeaveCommandProperty, value);

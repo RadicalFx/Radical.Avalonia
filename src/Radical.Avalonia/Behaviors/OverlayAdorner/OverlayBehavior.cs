@@ -5,6 +5,9 @@ using Avalonia.Media;
 
 namespace Radical.Avalonia.Behaviors
 {
+    /// <summary>
+    /// A behavior that shows content in an adorner overlaying the associated control.
+    /// </summary>
     public class OverlayBehavior : RadicalBehavior<Control>
     {
         static OverlayBehavior()
@@ -37,10 +40,16 @@ namespace Radical.Avalonia.Behaviors
 
         #region Styled Property: IsVisible
 
+        /// <summary>
+        /// Identifies the <see cref="IsVisible"/> styled property.
+        /// </summary>
         public static readonly StyledProperty<bool> IsVisibleProperty = AvaloniaProperty.Register<OverlayBehavior, bool>(
             "IsVisible",
             true);
 
+        /// <summary>
+        /// Gets or sets a value indicating whether the overlay is visible. Defaults to <c>true</c>.
+        /// </summary>
         public bool IsVisible
         {
             get { return GetValue(IsVisibleProperty); }
@@ -51,9 +60,15 @@ namespace Radical.Avalonia.Behaviors
 
         #region Styled Property: DisableAdornedElement
 
+        /// <summary>
+        /// Identifies the <see cref="DisableAdornedElement"/> styled property.
+        /// </summary>
         public static readonly StyledProperty<bool> DisableAdornedElementProperty = AvaloniaProperty.Register<OverlayBehavior, bool>(
             "DisableAdornedElement");
 
+        /// <summary>
+        /// Gets or sets a value indicating whether the associated control is disabled while the overlay is visible.
+        /// </summary>
         public bool DisableAdornedElement
         {
             get { return GetValue(DisableAdornedElementProperty); }
@@ -64,10 +79,16 @@ namespace Radical.Avalonia.Behaviors
 
         #region Styled Property: IsHitTestVisible
 
+        /// <summary>
+        /// Identifies the <see cref="IsHitTestVisible"/> styled property.
+        /// </summary>
         public static readonly StyledProperty<bool> IsHitTestVisibleProperty = AvaloniaProperty.Register<OverlayBehavior, bool>(
             "IsHitTestVisible",
             true);
 
+        /// <summary>
+        /// Gets or sets a value indicating whether the overlay is hit test visible. Defaults to <c>true</c>.
+        /// </summary>
         public bool IsHitTestVisible
         {
             get { return GetValue(IsHitTestVisibleProperty); }
@@ -78,9 +99,15 @@ namespace Radical.Avalonia.Behaviors
 
         #region Styled Property: Background
 
+        /// <summary>
+        /// Identifies the <see cref="Background"/> styled property.
+        /// </summary>
         public static readonly StyledProperty<IBrush> BackgroundProperty = AvaloniaProperty.Register<OverlayBehavior, IBrush>(
             "Background");
 
+        /// <summary>
+        /// Gets or sets the brush used to paint the overlay background.
+        /// </summary>
         public IBrush Background
         {
             get { return GetValue(BackgroundProperty); }
@@ -120,6 +147,7 @@ namespace Radical.Avalonia.Behaviors
         ContentOverlayAdorner adorner;
         private bool wasEnabled;
 
+        /// <inheritdoc/>
         protected override void OnAttached()
         {
             base.OnAttached();
@@ -171,6 +199,7 @@ namespace Radical.Avalonia.Behaviors
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnDetaching()
         {
             HideAdorner();

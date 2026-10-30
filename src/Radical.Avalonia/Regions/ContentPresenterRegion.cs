@@ -33,7 +33,7 @@ namespace Radical.Avalonia.Regions
         /// <summary>
         /// Called to get content.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The current content.</returns>
         protected override AvaloniaObject OnGetContent()
         {
             return Element.Content as AvaloniaObject;

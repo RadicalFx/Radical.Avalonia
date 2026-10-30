@@ -16,10 +16,19 @@ using Avalonia.Controls;
 
 namespace Radical.Avalonia.CommandBuilders
 {
+    /// <summary>
+    /// Builds <see cref="IDelegateCommand"/> instances bound to data context methods.
+    /// </summary>
     public class DelegateCommandBuilder
     {
         readonly static TraceSource logger = new TraceSource(typeof(DelegateCommandBuilder).FullName);
 
+        /// <summary>
+        /// Determines whether a command can be created for the given path and target.
+        /// </summary>
+        /// <param name="path">The path of the method.</param>
+        /// <param name="target">The command target.</param>
+        /// <returns><c>true</c> if the command can be created; otherwise, <c>false</c>.</returns>
         public virtual bool CanCreateCommand(string path, AvaloniaObject target)
         {
             if (DesignTimeHelper.GetIsInDesignMode())
@@ -30,6 +39,11 @@ namespace Radical.Avalonia.CommandBuilders
             return !string.IsNullOrEmpty(path) && target is StyledElement;
         }
 
+        /// <summary>
+        /// Gets the data context of the given target.
+        /// </summary>
+        /// <param name="target">The command target.</param>
+        /// <returns>The data context.</returns>
         public virtual object GetDataContext(AvaloniaObject target)
         {
             return ((StyledElement)target).DataContext;
@@ -41,7 +55,7 @@ namespace Radical.Avalonia.CommandBuilders
         /// <param name="path">The path.</param>
         /// <param name="dataContext">The data context.</param>
         /// <param name="data">The data.</param>
-        /// <returns></returns>
+        /// <returns><c>true</c> if the command data has been generated; otherwise, <c>false</c>.</returns>
         public virtual bool TryGenerateCommandData(string path, object dataContext, out CommandData data)
         {
             var propertyPath = path;
@@ -135,6 +149,11 @@ namespace Radical.Avalonia.CommandBuilders
             };
         }
 
+        /// <summary>
+        /// Creates the command described by the given command data.
+        /// </summary>
+        /// <param name="commandData">The command data.</param>
+        /// <returns>The command.</returns>
         public virtual IDelegateCommand CreateCommand(CommandData commandData)
         {
             var text = (commandData.Description == null) ?

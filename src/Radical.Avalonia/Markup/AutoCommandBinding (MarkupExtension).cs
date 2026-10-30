@@ -8,6 +8,11 @@ using Avalonia;
 
 namespace Radical.Avalonia.Markup
 {
+    /// <summary>
+    /// A command binding that generates the command from the data context method matching the
+    /// binding path. A boolean property named <c>Can</c> followed by the method name, if any,
+    /// determines if the command can be executed.
+    /// </summary>
     public class AutoCommandBinding : CommandBinding
     {
         readonly static TraceSource logger = new TraceSource(typeof(AutoCommandBinding).FullName);
@@ -56,6 +61,7 @@ namespace Radical.Avalonia.Markup
             return fakePlaceholder;
         }
 
+        /// <inheritdoc/>
         protected override void OnDataContextChanged(AvaloniaObject obj, AvaloniaProperty targetProperty, object newValue, object oldValue)
         {
             base.OnDataContextChanged(obj, targetProperty, newValue, oldValue);
@@ -78,11 +84,16 @@ namespace Radical.Avalonia.Markup
             }
         }
 
+        /// <summary>
+        /// Gets the builder used to generate the command.
+        /// </summary>
+        /// <returns>The command builder.</returns>
         protected virtual DelegateCommandBuilder GetCommandBuilder()
         {
             return new DelegateCommandBuilder();
         }
 
+        /// <inheritdoc/>
         protected override IDelegateCommand GetCommand(AvaloniaObject target, AvaloniaProperty targetProperty)
         {
             var builder = GetCommandBuilder();

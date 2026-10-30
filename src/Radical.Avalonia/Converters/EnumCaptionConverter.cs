@@ -5,6 +5,9 @@ using Avalonia.Markup.Xaml;
 
 namespace Radical.Avalonia.Converters
 {
+    /// <summary>
+    /// Converts an enumeration value, decorated with an <see cref="EnumItemDescriptionAttribute"/>, to its caption.
+    /// </summary>
     public sealed class EnumCaptionConverter : AbstractSingletonConverter
     {
         //static WeakReference singleton = new WeakReference( null );
@@ -21,6 +24,7 @@ namespace Radical.Avalonia.Converters
         //    return converter;
         //}
 
+        /// <inheritdoc/>
         public override object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             if (value != null && targetType == typeof(string))
@@ -37,6 +41,7 @@ namespace Radical.Avalonia.Converters
             return null;
         }
 
+        /// <inheritdoc/>
         public override object ConvertBack(object value, System.Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             throw new System.NotImplementedException();

@@ -71,7 +71,7 @@ namespace Radical.Avalonia.Regions
         /// <summary>
         /// Called to get content.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The current content.</returns>
         protected abstract AvaloniaObject OnGetContent();
 
         /// <summary>
