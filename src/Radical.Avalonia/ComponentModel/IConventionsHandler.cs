@@ -404,13 +404,13 @@ namespace Radical.Avalonia.ComponentModel
         Action<AvaloniaObject> DefaultDetachViewBehaviors { get; }
 
         /// <summary>
-        /// Gets or sets the default view data context search behavior.
+        /// Gets the default view data context search behavior: <see cref="ViewDataContextSearchBehavior.LocalOnly"/>.
         /// </summary>
         /// <value>
         /// The default view data context search behavior.
         /// </value>
         [IgnorePropertyInjectionAttribue]
-        ViewDataContextSearchBehavior DefaultViewDataContextSearchBehavior { get; set; }
+        ViewDataContextSearchBehavior DefaultViewDataContextSearchBehavior { get; }
 
         /// <summary>
         /// Gets or sets the generate service static resource key convention.
