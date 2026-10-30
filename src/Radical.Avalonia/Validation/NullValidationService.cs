@@ -20,7 +20,7 @@ namespace Radical.Avalonia.Validation
         private NullValidationService()
             : base()
         {
-
+            SuspendValidation();
         }
 
         private static readonly ValidationError[] emptyErrors = new ValidationError[0];

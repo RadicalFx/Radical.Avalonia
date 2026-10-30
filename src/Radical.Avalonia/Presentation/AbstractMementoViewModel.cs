@@ -20,7 +20,8 @@ namespace Radical.Avalonia.Presentation
     /// </summary>
     public abstract class AbstractMementoViewModel :
         MementoEntity,
-        IViewModel
+        IViewModel,
+        IRequireValidation
     {
         /// <summary>
         /// Gets or sets the view. The view property is intended only for
@@ -43,6 +44,7 @@ namespace Radical.Avalonia.Presentation
         protected override void OnPropertyChanged(PropertyChangedEventArgs e)
         {
             if (IsValidationEnabled
+                && !ValidationService.IsValidationSuspended
                 && RunValidationOnPropertyChanged
                 && !IsResettingValidation
                 && !IsTriggeringValidation
@@ -79,8 +81,7 @@ namespace Radical.Avalonia.Presentation
         {
             get
             {
-                return this is INotifyDataErrorInfo
-                    || this is IRequireValidation;
+                return true;
             }
         }
 
