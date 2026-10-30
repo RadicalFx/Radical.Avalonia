@@ -1,0 +1,29 @@
+<UserControl x:Class="Radical.Avalonia.Tests.Behaviors.BehaviorsView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:i="using:Avalonia.Xaml.Interactivity"
+             xmlns:rb="using:Radical.Avalonia.Behaviors"
+             xmlns:local="using:Radical.Avalonia.Tests.Behaviors"
+             x:DataType="local:BehaviorsViewModel">
+    <StackPanel>
+        <TextBox x:Name="FirstName">
+            <i:Interaction.Behaviors>
+                <rb:Focus UsingKey="FirstName" ControlledBy="{Binding FocusedElement}" />
+            </i:Interaction.Behaviors>
+        </TextBox>
+        <TextBox x:Name="LastName">
+            <i:Interaction.Behaviors>
+                <rb:Focus UsingKey="LastName" ControlledBy="{Binding FocusedElement}" />
+            </i:Interaction.Behaviors>
+        </TextBox>
+        <TextBox x:Name="Search"
+                 rb:TextBoxManager.Command="{Binding SearchCommand}"
+                 rb:TextBoxManager.CommandParameter="search"
+                 rb:TextBoxManager.AutoSelectText="True" />
+        <Button x:Name="Save" Content="Save">
+            <i:Interaction.Behaviors>
+                <rb:Handle RoutedEvent="{x:Static Button.ClickEvent}" WithCommand="{Binding SaveCommand}" PassingIn="$source.Name" />
+            </i:Interaction.Behaviors>
+        </Button>
+    </StackPanel>
+</UserControl>
