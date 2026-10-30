@@ -9,6 +9,12 @@ namespace Radical.Avalonia.Bootstrap
     /// <summary>
     /// The configuration of the SplashScreen.
     /// </summary>
+    /// <remarks>
+    /// On desktop the splash screen view is hosted in a window, unless it already is a window,
+    /// and the window related settings apply. On single-view platforms (mobile and browser) the
+    /// splash screen view is the main view until the shell replaces it: it cannot be a window and
+    /// the window related settings are ignored.
+    /// </remarks>
     public class SplashScreenConfiguration
     {
         /// <summary>

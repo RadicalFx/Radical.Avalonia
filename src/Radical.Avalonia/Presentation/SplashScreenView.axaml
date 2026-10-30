@@ -1,10 +1,9 @@
-﻿<Window x:Class="Radical.Avalonia.Presentation.SplashScreenView"
-        x:ClassModifier="internal"
-        xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:rg="using:Radical.Avalonia.Regions"
-        Title="">
+﻿<UserControl x:Class="Radical.Avalonia.Presentation.SplashScreenView"
+             x:ClassModifier="internal"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:rg="using:Radical.Avalonia.Regions">
     <Grid>
         <ContentPresenter rg:RegionService.Region="{rg:ContentPresenterRegion Name=SplashScreenContent}" />
     </Grid>
-</Window>
+</UserControl>

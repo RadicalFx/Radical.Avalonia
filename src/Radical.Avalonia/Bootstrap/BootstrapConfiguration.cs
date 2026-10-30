@@ -148,22 +148,32 @@ namespace Radical.Avalonia.Bootstrap
         }
 
         /// <summary>
-        /// Defines the type to use as main/shell window.
+        /// Defines the type to use as main/shell view.
         /// </summary>
-        public void UseAsShell<TShellType>() where TShellType : Window
+        /// <remarks>
+        /// On desktop a shell that is not a <see cref="Window"/> is hosted in a new window.
+        /// On single-view platforms (mobile and browser) the shell is the main view and cannot be a <see cref="Window"/>:
+        /// a control, e.g. a UserControl, can be used as shell on all platforms.
+        /// </remarks>
+        public void UseAsShell<TShellType>() where TShellType : Control
         {
             UseAsShell(typeof(TShellType));
         }
 
         /// <summary>
-        /// Defines the type to use as main/shell window.
+        /// Defines the type to use as main/shell view.
         /// </summary>
+        /// <remarks>
+        /// On desktop a shell that is not a <see cref="Window"/> is hosted in a new window.
+        /// On single-view platforms (mobile and browser) the shell is the main view and cannot be a <see cref="Window"/>:
+        /// a control, e.g. a UserControl, can be used as shell on all platforms.
+        /// </remarks>
         public void UseAsShell(Type shellViewType)
         {
             Ensure.That(shellViewType)
                 .Named(nameof(shellViewType))
-                .WithMessage("Only Window is supported as shell type.")
-                .Is<Window>();
+                .WithMessage("Only controls are supported as shell type.")
+                .Is<Control>();
 
             ShellViewType = shellViewType;
         }

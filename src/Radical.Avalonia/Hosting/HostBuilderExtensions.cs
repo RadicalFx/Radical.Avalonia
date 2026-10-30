@@ -20,7 +20,7 @@ namespace Microsoft.Extensions.Hosting
         /// <summary>
         /// Add a RadicalApplication to the current host builder
         /// </summary>
-        public static IHostBuilder AddRadicalApplication<TShellView>(this IHostBuilder hostBuilder) where TShellView : Window
+        public static IHostBuilder AddRadicalApplication<TShellView>(this IHostBuilder hostBuilder) where TShellView : Control
         {
             return AddRadicalApplication(hostBuilder, typeof(TShellView), null);
         }
@@ -28,7 +28,7 @@ namespace Microsoft.Extensions.Hosting
         /// <summary>
         /// Add a RadicalApplication to the current host builder
         /// </summary>
-        public static IHostBuilder AddRadicalApplication<TShellView>(this IHostBuilder hostBuilder, Action<BootstrapConfiguration> configure) where TShellView : Window
+        public static IHostBuilder AddRadicalApplication<TShellView>(this IHostBuilder hostBuilder, Action<BootstrapConfiguration> configure) where TShellView : Control
         {
             return AddRadicalApplication(hostBuilder, typeof(TShellView), configure);
         }

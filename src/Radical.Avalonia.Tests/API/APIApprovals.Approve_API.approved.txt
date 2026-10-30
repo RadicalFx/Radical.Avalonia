@@ -6,9 +6,9 @@ namespace Avalonia
         public static Radical.Avalonia.RadicalApplication AddRadicalApplication(this Avalonia.Application application, System.Action<Radical.Avalonia.Bootstrap.BootstrapConfiguration> configure) { }
         public static Radical.Avalonia.RadicalApplication AddRadicalApplication(this Avalonia.Application application, System.Type shellViewType, System.Action<Radical.Avalonia.Bootstrap.BootstrapConfiguration> configure) { }
         public static Radical.Avalonia.RadicalApplication AddRadicalApplication<TShellView>(this Avalonia.Application application)
-            where TShellView : Avalonia.Controls.Window { }
+            where TShellView : Avalonia.Controls.Control { }
         public static Radical.Avalonia.RadicalApplication AddRadicalApplication<TShellView>(this Avalonia.Application application, System.Action<Radical.Avalonia.Bootstrap.BootstrapConfiguration> configure)
-            where TShellView : Avalonia.Controls.Window { }
+            where TShellView : Avalonia.Controls.Control { }
     }
 }
 namespace Microsoft.Extensions.Hosting
@@ -18,9 +18,9 @@ namespace Microsoft.Extensions.Hosting
         public static Microsoft.Extensions.Hosting.IHostBuilder AddRadicalApplication(this Microsoft.Extensions.Hosting.IHostBuilder hostBuilder, System.Action<Radical.Avalonia.Bootstrap.BootstrapConfiguration> configure) { }
         public static Microsoft.Extensions.Hosting.IHostBuilder AddRadicalApplication(this Microsoft.Extensions.Hosting.IHostBuilder hostBuilder, System.Type shellType, System.Action<Radical.Avalonia.Bootstrap.BootstrapConfiguration> configure) { }
         public static Microsoft.Extensions.Hosting.IHostBuilder AddRadicalApplication<TShellView>(this Microsoft.Extensions.Hosting.IHostBuilder hostBuilder)
-            where TShellView : Avalonia.Controls.Window { }
+            where TShellView : Avalonia.Controls.Control { }
         public static Microsoft.Extensions.Hosting.IHostBuilder AddRadicalApplication<TShellView>(this Microsoft.Extensions.Hosting.IHostBuilder hostBuilder, System.Action<Radical.Avalonia.Bootstrap.BootstrapConfiguration> configure)
-            where TShellView : Avalonia.Controls.Window { }
+            where TShellView : Avalonia.Controls.Control { }
     }
 }
 namespace Radical.Avalonia.Analytics
@@ -303,7 +303,7 @@ namespace Radical.Avalonia.Bootstrap
         public void RegisterAsLocalSingleton(string registrationKey) { }
         public void UseAsShell(System.Type shellViewType) { }
         public void UseAsShell<TShellType>()
-            where TShellType : Avalonia.Controls.Window { }
+            where TShellType : Avalonia.Controls.Control { }
         public void UseCulture(System.Func<System.IServiceProvider, System.Globalization.CultureInfo> cultureConfig) { }
         public void UseUICulture(System.Func<System.IServiceProvider, System.Globalization.CultureInfo> uiCultureConfig) { }
     }
