@@ -263,68 +263,28 @@ namespace Radical.Avalonia
         void OnBootCompleted(IServiceProvider serviceProvider)
         {
             var resolver = serviceProvider.GetService<IViewResolver>();
-            var desktop = application.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime;
+            var shellHost = ShellHost.Factory(application.ApplicationLifetime);
 
-            Window showSplash()
+            void showSplash()
             {
                 var splashScreenConfiguration = bootstrapConfiguration.SplashScreenConfiguration;
-                var splashScreen = (Window)resolver.GetView(splashScreenConfiguration.SplashScreenViewType);
-                if (desktop != null)
-                {
-                    desktop.MainWindow = splashScreen;
-                }
+                var splashScreen = (Control)resolver.GetView(splashScreenConfiguration.SplashScreenViewType);
 
-                splashScreen.WindowStartupLocation = splashScreenConfiguration.WindowStartupLocation;
-                if (splashScreenConfiguration.MinWidth.HasValue)
-                {
-                    splashScreen.MinWidth = splashScreenConfiguration.MinWidth.Value;
-                }
-
-                if (splashScreenConfiguration.MinHeight.HasValue)
-                {
-                    splashScreen.MinHeight = splashScreenConfiguration.MinHeight.Value;
-                }
-
-                splashScreen.WindowDecorations = splashScreenConfiguration.WindowDecorations;
-                splashScreen.SizeToContent = splashScreenConfiguration.SizeToContent;
-                switch (splashScreen.SizeToContent)
-                {
-                    case SizeToContent.Manual:
-                        splashScreen.Width = splashScreenConfiguration.Width;
-                        splashScreen.Height = splashScreenConfiguration.Height;
-                        break;
-
-                    case SizeToContent.Height:
-                        splashScreen.Width = splashScreenConfiguration.Width;
-                        break;
-
-                    case SizeToContent.Width:
-                        splashScreen.Height = splashScreenConfiguration.Height;
-                        break;
-                }
-
-                splashScreen.Show();
-
-                return splashScreen;
+                shellHost.ShowSplashScreen(splashScreen, splashScreenConfiguration);
             }
 
             void showShell()
             {
                 if (bootstrapConfiguration.ShellViewType != null)
                 {
-                    var mainView = (Window)resolver.GetView(bootstrapConfiguration.ShellViewType);
-                    if (desktop != null)
-                    {
-                        desktop.MainWindow = mainView;
-                    }
-
-                    mainView.Show();
+                    var mainView = (Control)resolver.GetView(bootstrapConfiguration.ShellViewType);
+                    shellHost.ShowShell(mainView);
                 }
             }
 
             if (bootstrapConfiguration.IsSplashScreenEnabled)
             {
-                var splashScreen = showSplash();
+                showSplash();
 
                 async Task action()
                 {
@@ -354,7 +314,6 @@ namespace Radical.Avalonia
                     }
 
                     showShell();
-                    splashScreen.Close();
                 }, Dispatcher.UIThread.ToTaskScheduler());
             }
             else

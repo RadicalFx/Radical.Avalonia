@@ -18,7 +18,7 @@ namespace Avalonia
         /// <summary>
         /// Add a RadicalApplication to the current Avalonia application
         /// </summary>
-        public static RadicalApplication AddRadicalApplication<TShellView>(this Application application) where TShellView : Window
+        public static RadicalApplication AddRadicalApplication<TShellView>(this Application application) where TShellView : Control
         {
             return AddRadicalApplication(application, typeof(TShellView), null);
         }
@@ -26,7 +26,7 @@ namespace Avalonia
         /// <summary>
         /// Add a RadicalApplication to the current Avalonia application
         /// </summary>
-        public static RadicalApplication AddRadicalApplication<TShellView>(this Application application, Action<BootstrapConfiguration> configure) where TShellView : Window
+        public static RadicalApplication AddRadicalApplication<TShellView>(this Application application, Action<BootstrapConfiguration> configure) where TShellView : Control
         {
             return AddRadicalApplication(application, typeof(TShellView), configure);
         }
