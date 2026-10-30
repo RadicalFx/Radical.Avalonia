@@ -24,6 +24,12 @@ namespace Radical.Avalonia
     public sealed class RadicalApplication
     {
         /// <summary>
+        /// Gets the lifetime of the given application, replaceable by tests
+        /// as the lifetime cannot be changed once the application is initialized.
+        /// </summary>
+        internal static Func<Application, IApplicationLifetime> LifetimeOf = application => application.ApplicationLifetime;
+
+        /// <summary>
         /// Create a Radical application with a life-cycle
         /// bound to the supplied Avalonia application, using
         /// the given configuration.
@@ -45,7 +51,7 @@ namespace Radical.Avalonia
 
             if (bootstrapConfiguration.IsAutoBootEnabled)
             {
-                if (application.ApplicationLifetime is IControlledApplicationLifetime lifetime)
+                if (LifetimeOf(application) is IControlledApplicationLifetime lifetime)
                 {
                     lifetime.Startup += (s, e) => radicalApplication.BootApplication();
                 }
@@ -88,15 +94,9 @@ namespace Radical.Avalonia
                 bootstrapConfiguration.UnhandledExceptionHandler(ex);
             };
 
-            if (application.ApplicationLifetime is IControlledApplicationLifetime lifetime)
+            if (LifetimeOf(application) is IControlledApplicationLifetime lifetime)
             {
-                lifetime.Exit += (s, e) =>
-                {
-                    if (!isShuttingDown)
-                    {
-                        OnShutdownCore(ApplicationShutdownReason.ApplicationRequest);
-                    }
-                };
+                lifetime.Exit += (s, e) => OnLifetimeExit();
             }
 
             AppDomain.CurrentDomain.UnhandledException += (s, e) =>
@@ -114,7 +114,7 @@ namespace Radical.Avalonia
                 feature.Setup(serviceProvider, bootstrapConfiguration);
             }
 
-            if (bootstrapConfiguration.ShutdownMode != null && application.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+            if (bootstrapConfiguration.ShutdownMode != null && LifetimeOf(application) is IClassicDesktopStyleApplicationLifetime desktop)
             {
                 desktop.ShutdownMode = bootstrapConfiguration.ShutdownMode.Value;
             }
@@ -179,6 +179,12 @@ namespace Radical.Avalonia
 
         void OnShutdownCore(ApplicationShutdownReason reason)
         {
+            if (isShuttingDown)
+            {
+                // e.g. the lifetime raising Exit while shutting down
+                return;
+            }
+
             var canceled = false;
 
             try
@@ -229,7 +235,7 @@ namespace Radical.Avalonia
                 {
                     if (reason != ApplicationShutdownReason.ApplicationRequest)
                     {
-                        (application.ApplicationLifetime as IControlledApplicationLifetime)?.Shutdown();
+                        (LifetimeOf(application) as IControlledApplicationLifetime)?.Shutdown();
                     }
 
                     singletonApplicationMutex?.Dispose();
@@ -260,10 +266,19 @@ namespace Radical.Avalonia
             OnShutdownCore(ApplicationShutdownReason.UserRequest);
         }
 
+        /// <summary>
+        /// Shuts down this application because the application lifetime is exiting,
+        /// without shutting down the lifetime again.
+        /// </summary>
+        internal void OnLifetimeExit()
+        {
+            OnShutdownCore(ApplicationShutdownReason.ApplicationRequest);
+        }
+
         void OnBootCompleted(IServiceProvider serviceProvider)
         {
             var resolver = serviceProvider.GetService<IViewResolver>();
-            var shellHost = ShellHost.Factory(application.ApplicationLifetime);
+            var shellHost = ShellHost.Factory(LifetimeOf(application));
 
             void showSplash()
             {

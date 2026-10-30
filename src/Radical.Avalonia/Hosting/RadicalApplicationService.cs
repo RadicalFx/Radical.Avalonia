@@ -14,11 +14,13 @@ namespace Radical.Avalonia.Hosting
         IServiceProvider serviceProvider;
         BootstrapConfiguration bootstrapConfiguration;
         RadicalApplication radicalApplication;
+        LifetimeExitTracker lifetimeExitTracker;
 
         public RadicalApplicationService(IServiceProvider serviceProvider)
         {
             this.serviceProvider = serviceProvider;
             bootstrapConfiguration = serviceProvider.GetRequiredService<BootstrapConfiguration>();
+            lifetimeExitTracker = serviceProvider.GetRequiredService<LifetimeExitTracker>();
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
@@ -32,7 +34,14 @@ namespace Radical.Avalonia.Hosting
 
         public Task StopAsync(CancellationToken cancellationToken)
         {
-            radicalApplication.Shutdown();
+            if (lifetimeExitTracker.IsExiting)
+            {
+                radicalApplication.OnLifetimeExit();
+            }
+            else
+            {
+                radicalApplication.Shutdown();
+            }
             return Task.CompletedTask;
         }
     }
