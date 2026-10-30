@@ -32,6 +32,26 @@ namespace Radical.Avalonia.Analytics
 }
 namespace Radical.Avalonia.Behaviors
 {
+    public enum BusyStatus
+    {
+        Idle = 0,
+        Busy = 1,
+    }
+    public static class BusyStatusManager
+    {
+        public static readonly Avalonia.AttachedProperty<object> ContentProperty;
+        public static readonly Avalonia.AttachedProperty<Radical.Avalonia.Behaviors.BusyStatus> StatusProperty;
+        public static object GetContent(Avalonia.Controls.Control control) { }
+        public static Radical.Avalonia.Behaviors.BusyStatus GetStatus(Avalonia.Controls.Control control) { }
+        public static void SetContent(Avalonia.Controls.Control control, object value) { }
+        public static void SetStatus(Avalonia.Controls.Control control, Radical.Avalonia.Behaviors.BusyStatus value) { }
+    }
+    public static class CueBannerService
+    {
+        public static readonly Avalonia.AttachedProperty<object> CueBannerProperty;
+        public static object GetCueBanner(Avalonia.Controls.TextBox control) { }
+        public static void SetCueBanner(Avalonia.Controls.TextBox control, object value) { }
+    }
     public class DependencyObjectCloseHandlerBehavior : Avalonia.Xaml.Interactivity.Behavior<Avalonia.AvaloniaObject>
     {
         public DependencyObjectCloseHandlerBehavior(Radical.ComponentModel.Messaging.IMessageBroker broker, Radical.Avalonia.ComponentModel.IConventionsHandler conventions) { }
@@ -41,6 +61,12 @@ namespace Radical.Avalonia.Behaviors
     public static class DesignTimeHelper
     {
         public static bool GetIsInDesignMode() { }
+    }
+    public static class EmptyPlaceHolderService
+    {
+        public static readonly Avalonia.AttachedProperty<object> ContentProperty;
+        public static object GetContent(Avalonia.Controls.ItemsControl owner) { }
+        public static void SetContent(Avalonia.Controls.ItemsControl owner, object value) { }
     }
     public class Focus : Radical.Avalonia.Behaviors.RadicalBehavior<Avalonia.Controls.Control>
     {
@@ -90,6 +116,28 @@ namespace Radical.Avalonia.Behaviors
         public static void SetOnMouseDoubleClick(Avalonia.Controls.Control owner, Avalonia.Point point) { }
         public static void SetOnMouseLeftButtonDown(Avalonia.Controls.Control owner, Avalonia.Point point) { }
         public static void SetOnMouseRightButtonDown(Avalonia.Controls.Control owner, Avalonia.Point point) { }
+    }
+    public static class Overlay
+    {
+        public static readonly Avalonia.AttachedProperty<object> ContentProperty;
+        public static object GetContent(Avalonia.Controls.Control control) { }
+        public static void SetContent(Avalonia.Controls.Control control, object value) { }
+    }
+    public class OverlayBehavior : Radical.Avalonia.Behaviors.RadicalBehavior<Avalonia.Controls.Control>
+    {
+        public static readonly Avalonia.StyledProperty<Avalonia.Media.IBrush> BackgroundProperty;
+        public static readonly Avalonia.StyledProperty<object> ContentProperty;
+        public static readonly Avalonia.StyledProperty<bool> DisableAdornedElementProperty;
+        public static readonly Avalonia.StyledProperty<bool> IsHitTestVisibleProperty;
+        public static readonly Avalonia.StyledProperty<bool> IsVisibleProperty;
+        public OverlayBehavior() { }
+        public Avalonia.Media.IBrush Background { get; set; }
+        public object Content { get; set; }
+        public bool DisableAdornedElement { get; set; }
+        public bool IsHitTestVisible { get; set; }
+        public bool IsVisible { get; set; }
+        protected override void OnAttached() { }
+        protected override void OnDetaching() { }
     }
     public abstract class RadicalBehavior<T> : Avalonia.Xaml.Interactivity.Behavior<T>, Radical.Avalonia.Behaviors.INotifyAttachedOjectLoaded
         where T : Avalonia.Controls.Control
@@ -705,6 +753,12 @@ namespace Radical.Avalonia.Converters
     public class BinaryImageConverter : Radical.Avalonia.Converters.AbstractSingletonConverter
     {
         public BinaryImageConverter() { }
+        public override object Convert(object value, System.Type targetType, object parameter, System.Globalization.CultureInfo culture) { }
+        public override object ConvertBack(object value, System.Type targetType, object parameter, System.Globalization.CultureInfo culture) { }
+    }
+    public sealed class BooleanBusyStatusConverter : Radical.Avalonia.Converters.AbstractSingletonConverter
+    {
+        public BooleanBusyStatusConverter() { }
         public override object Convert(object value, System.Type targetType, object parameter, System.Globalization.CultureInfo culture) { }
         public override object ConvertBack(object value, System.Type targetType, object parameter, System.Globalization.CultureInfo culture) { }
     }

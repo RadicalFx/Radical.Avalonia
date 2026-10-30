@@ -142,7 +142,7 @@ namespace Radical.Avalonia.Regions
                         {
                             Logger.Warning("Regions highlighting is turned on.");
 
-                            AdornerLayer.SetAdorner(Element, new RegionHilightAdorner(this, Brushes.Red));
+                            Adorners.Add(Element, new RegionHilightAdorner(this, Brushes.Red));
                         }
                     }
                 }
