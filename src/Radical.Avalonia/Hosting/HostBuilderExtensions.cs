@@ -57,6 +57,7 @@ namespace Microsoft.Extensions.Hosting
                 configuration.ConfigureServicesHandler(serviceCollection);
                 configuration.PopulateServiceCollection(serviceCollection);
 
+                serviceCollection.AddSingleton(new LifetimeExitTracker());
                 serviceCollection.AddHostedService<RadicalApplicationService>();
             });
 
