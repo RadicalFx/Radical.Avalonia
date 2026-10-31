@@ -1064,7 +1064,7 @@ namespace Radical.Avalonia
 }
 namespace Radical.Avalonia.Presentation
 {
-    public abstract class AbstractMementoViewModel : Radical.Model.MementoEntity, Radical.Avalonia.ComponentModel.IViewModel, System.ComponentModel.INotifyPropertyChanged
+    public abstract class AbstractMementoViewModel : Radical.Model.MementoEntity, Radical.Avalonia.ComponentModel.IRequireValidation, Radical.Avalonia.ComponentModel.IViewModel, System.ComponentModel.INotifyDataErrorInfo, System.ComponentModel.INotifyPropertyChanged
     {
         protected AbstractMementoViewModel() { }
         protected AbstractMementoViewModel(Radical.ComponentModel.ChangeTracking.ChangeTrackingRegistration registration) { }
@@ -1128,7 +1128,7 @@ namespace Radical.Avalonia.Presentation
                 "Errors"})]
         protected virtual System.ValueTuple<bool, System.Collections.Generic.IEnumerable<Radical.Validation.ValidationError>> ValidateProperty(string propertyName, Radical.Avalonia.ComponentModel.ValidationBehavior behavior) { }
     }
-    public abstract class AbstractViewModel : Radical.Model.Entity, Radical.Avalonia.ComponentModel.IViewModel, System.ComponentModel.INotifyPropertyChanged, System.ComponentModel.ISupportInitialize
+    public abstract class AbstractViewModel : Radical.Model.Entity, Radical.Avalonia.ComponentModel.IRequireValidation, Radical.Avalonia.ComponentModel.IViewModel, System.ComponentModel.INotifyDataErrorInfo, System.ComponentModel.INotifyPropertyChanged, System.ComponentModel.ISupportInitialize
     {
         protected AbstractViewModel() { }
         protected Radical.Avalonia.ComponentModel.ValidationBehavior DefaultValidationBehavior { get; set; }
