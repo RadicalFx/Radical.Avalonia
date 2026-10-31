@@ -37,12 +37,10 @@ namespace Radical.Avalonia.Hosting
             if (lifetimeExitTracker.IsExiting)
             {
                 radicalApplication.OnLifetimeExit();
+                return Task.CompletedTask;
             }
-            else
-            {
-                radicalApplication.Shutdown();
-            }
-            return Task.CompletedTask;
+
+            return radicalApplication.ShutdownAsync();
         }
     }
 }

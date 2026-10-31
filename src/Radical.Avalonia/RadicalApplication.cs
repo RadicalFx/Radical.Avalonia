@@ -123,10 +123,7 @@ namespace Radical.Avalonia
             }
 
             var broker = serviceProvider.GetService<IMessageBroker>();
-            broker.Subscribe<ApplicationShutdownRequest>(this, InvocationModel.Safe, (s, m) =>
-            {
-                OnShutdownCore(ApplicationShutdownReason.UserRequest);
-            });
+            broker.Subscribe<ApplicationShutdownRequest>(this, InvocationModel.Safe, (s, m) => OnShutdownCoreAsync(ApplicationShutdownReason.UserRequest));
 
             var args = new SingletonApplicationStartupArgs(bootstrapConfiguration.SingletonApplicationScope, bootstrapConfiguration.SingletonRegistrationKey);
             HandleSingletonApplicationStartup(args);
@@ -137,7 +134,8 @@ namespace Radical.Avalonia
             }
             else
             {
-                OnShutdownCore(ApplicationShutdownReason.MultipleInstanceNotAllowed);
+                // Not a user request: completes synchronously.
+                _ = OnShutdownCoreAsync(ApplicationShutdownReason.MultipleInstanceNotAllowed);
             }
 
             if (!isShuttingDown)
@@ -146,7 +144,7 @@ namespace Radical.Avalonia
 
                 bootstrapConfiguration.ExposeRegisteredAppResources(serviceProvider, application);
 
-                broker.Broadcast(this, new ApplicationBootCompleted());
+                _ = broker.BroadcastAsync(this, new ApplicationBootCompleted());
 
                 bootstrapConfiguration.BootCompletedHandler(serviceProvider);
 
@@ -180,7 +178,10 @@ namespace Radical.Avalonia
             }
         }
 
-        void OnShutdownCore(ApplicationShutdownReason reason)
+        // Only a user request awaits, letting ApplicationShutdownRequested subscribers
+        // complete asynchronously; any other reason completes synchronously, as
+        // required when shutting down from the platform's synchronous events.
+        async Task OnShutdownCoreAsync(ApplicationShutdownReason reason)
         {
             if (isShuttingDown)
             {
@@ -188,7 +189,7 @@ namespace Radical.Avalonia
                 return;
             }
 
-            var canceled = false;
+            var skipShutdown = false;
 
             try
             {
@@ -197,13 +198,20 @@ namespace Radical.Avalonia
                     var msg = new ApplicationShutdownRequested(reason);
 
                     var broker = serviceProvider.GetService<IMessageBroker>();
-                    broker.Dispatch(this, msg);
+                    await broker.DispatchAsync(this, msg);
 
-                    canceled = msg.Cancel;
-
-                    if (canceled)
+                    if (isShuttingDown)
                     {
-                        broker.Broadcast(this, new ApplicationShutdownCanceled(reason));
+                        // the application shut down, e.g. the lifetime exited, while awaiting the subscribers
+                        skipShutdown = true;
+                        return;
+                    }
+
+                    skipShutdown = msg.Cancel;
+
+                    if (skipShutdown)
+                    {
+                        _ = broker.BroadcastAsync(this, new ApplicationShutdownCanceled(reason));
                         return;
                     }
                 }
@@ -212,9 +220,9 @@ namespace Radical.Avalonia
 
                 if (isBootCompleted)
                 {
-                    serviceProvider
+                    _ = serviceProvider
                         .GetService<IMessageBroker>()
-                        .Broadcast(this, new ApplicationShutdown(reason));
+                        .BroadcastAsync(this, new ApplicationShutdown(reason));
 
                     var callbacks = serviceProvider.GetServices<IExpectShutdownCallback>();
                     if (callbacks != null && callbacks.Any())
@@ -234,7 +242,7 @@ namespace Radical.Avalonia
             }
             finally
             {
-                if (!canceled)
+                if (!skipShutdown)
                 {
                     if (reason != ApplicationShutdownReason.ApplicationRequest)
                     {
@@ -262,11 +270,13 @@ namespace Radical.Avalonia
         }
 
         /// <summary>
-        /// Shutdowns this application.
+        /// Shuts down this application. <see cref="ApplicationShutdownRequested"/> subscribers
+        /// can cancel the shutdown, and are awaited before shutting down.
         /// </summary>
-        public void Shutdown()
+        /// <returns>A task that completes when the application has shut down, or the shutdown has been canceled.</returns>
+        public Task ShutdownAsync()
         {
-            OnShutdownCore(ApplicationShutdownReason.UserRequest);
+            return OnShutdownCoreAsync(ApplicationShutdownReason.UserRequest);
         }
 
         /// <summary>
@@ -275,7 +285,8 @@ namespace Radical.Avalonia
         /// </summary>
         internal void OnLifetimeExit()
         {
-            OnShutdownCore(ApplicationShutdownReason.ApplicationRequest);
+            // Not a user request: completes synchronously.
+            _ = OnShutdownCoreAsync(ApplicationShutdownReason.ApplicationRequest);
         }
 
         void OnBootCompleted(IServiceProvider serviceProvider)
