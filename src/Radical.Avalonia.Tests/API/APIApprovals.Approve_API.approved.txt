@@ -1360,11 +1360,6 @@ namespace Radical.Avalonia.Validation
         protected override System.Collections.Generic.IEnumerable<Radical.Validation.ValidationError> OnValidate() { }
         protected override System.Collections.Generic.IEnumerable<Radical.Validation.ValidationError> OnValidateProperty(string propertyName) { }
     }
-    public sealed class DelegateValidationService : Radical.Avalonia.Validation.AbstractValidationService
-    {
-        public DelegateValidationService(System.Func<System.Collections.Generic.IEnumerable<Radical.Validation.ValidationError>> validationCallback) { }
-        protected override System.Collections.Generic.IEnumerable<Radical.Validation.ValidationError> OnValidate() { }
-    }
     public sealed class NullValidationService : Radical.Avalonia.Validation.AbstractValidationService
     {
         public static readonly Radical.Avalonia.ComponentModel.IValidationService Instance;
