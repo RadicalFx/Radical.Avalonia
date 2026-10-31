@@ -533,7 +533,7 @@ namespace Radical.Avalonia.ComponentModel
         [Radical.Avalonia.ComponentModel.IgnorePropertyInjectionAttribue]
         System.Func<Avalonia.AvaloniaObject, System.Action<Avalonia.AvaloniaObject>, Avalonia.AvaloniaObject> DefaultTryHookClosedEventOfHostOf { get; }
         [Radical.Avalonia.ComponentModel.IgnorePropertyInjectionAttribue]
-        Radical.Avalonia.ComponentModel.ViewDataContextSearchBehavior DefaultViewDataContextSearchBehavior { get; set; }
+        Radical.Avalonia.ComponentModel.ViewDataContextSearchBehavior DefaultViewDataContextSearchBehavior { get; }
         [Radical.Avalonia.ComponentModel.IgnorePropertyInjectionAttribue]
         System.Func<Avalonia.AvaloniaObject, Radical.Avalonia.ComponentModel.ViewDataContextSearchBehavior, bool> DefaultViewHasDataContext { get; }
         [Radical.Avalonia.ComponentModel.IgnorePropertyInjectionAttribue]
