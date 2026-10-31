@@ -1032,12 +1032,6 @@ namespace Radical.Avalonia.Messaging
         public ViewModelClosed(object viewModel) { }
         public object ViewModel { get; }
     }
-    public class ViewModelClosing
-    {
-        public ViewModelClosing(object viewModel) { }
-        public bool Cancel { get; set; }
-        public object ViewModel { get; }
-    }
     public class ViewModelLoaded
     {
         public ViewModelLoaded(object viewModel) { }
