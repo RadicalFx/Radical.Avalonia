@@ -441,6 +441,7 @@ namespace Radical.Avalonia.CommandBuilders
     public class CommandData
     {
         public CommandData() { }
+        public Radical.Reflection.LateBoundMethod AsyncFastDelegate { get; set; }
         public Radical.Avalonia.CommandBuilders.BooleanFact BooleanFact { get; set; }
         public object DataContext { get; set; }
         public Radical.Avalonia.ComponentModel.CommandDescriptionAttribute Description { get; set; }
@@ -591,8 +592,10 @@ namespace Radical.Avalonia.ComponentModel
         Radical.Avalonia.ComponentModel.IDelegateCommand AddMonitor(Radical.ComponentModel.IMonitor source);
         Radical.Avalonia.ComponentModel.IDelegateCommand AddMonitor(params Radical.ComponentModel.IMonitor[] triggers);
         void EvaluateCanExecute();
+        System.Threading.Tasks.Task ExecuteAsync(object parameter);
         Radical.Avalonia.ComponentModel.IDelegateCommand OnCanExecute(System.Func<object, bool> canExecuteMethod);
         Radical.Avalonia.ComponentModel.IDelegateCommand OnExecute(System.Action<object> executeMethod);
+        Radical.Avalonia.ComponentModel.IDelegateCommand OnExecute(System.Func<object, System.Threading.Tasks.Task> executeMethod);
         Radical.Avalonia.ComponentModel.IDelegateCommand RemoveMonitor(Radical.ComponentModel.IMonitor source);
         Radical.Avalonia.ComponentModel.IDelegateCommand WithTrackingPreview(System.Action<Radical.Analytics.AnalyticsEvent> onBeforeTracking);
     }
@@ -894,9 +897,11 @@ namespace Radical.Avalonia.Input
         public bool CanExecute(object parameter) { }
         public virtual void EvaluateCanExecute() { }
         public void Execute(object parameter) { }
+        public System.Threading.Tasks.Task ExecuteAsync(object parameter) { }
         public virtual Radical.Avalonia.ComponentModel.IDelegateCommand OnCanExecute(System.Func<object, bool> canExecuteMethod) { }
         protected virtual void OnCanExecuteChanged() { }
         public virtual Radical.Avalonia.ComponentModel.IDelegateCommand OnExecute(System.Action<object> executeMethod) { }
+        public virtual Radical.Avalonia.ComponentModel.IDelegateCommand OnExecute(System.Func<object, System.Threading.Tasks.Task> executeMethod) { }
         protected virtual void OnTriggerChanged(Radical.ComponentModel.IMonitor source) { }
         public Radical.Avalonia.ComponentModel.IDelegateCommand RemoveMonitor(Radical.ComponentModel.IMonitor source) { }
         public Radical.Avalonia.ComponentModel.IDelegateCommand WithTrackingPreview(System.Action<Radical.Analytics.AnalyticsEvent> onBeforeTracking) { }

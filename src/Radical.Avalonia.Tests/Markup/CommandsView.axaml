@@ -6,6 +6,7 @@
         xmlns:local="using:Radical.Avalonia.Tests.Markup">
     <StackPanel>
         <Button x:Name="AutoButton" Command="{mk:AutoCommandBinding Path=Save}" CommandParameter="42" />
+        <Button x:Name="AsyncButton" Command="{mk:AutoCommandBinding Path=SaveAsync}" CommandParameter="42" />
         <Button x:Name="BoundButton" Command="{mk:CommandBinding Path=RefreshCommand}" />
         <Button x:Name="BehaviorHost">
             <i:Interaction.Behaviors>
