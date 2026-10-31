@@ -1,7 +1,8 @@
-using Avalonia.Input;
+﻿using Avalonia.Input;
 using Radical.Avalonia.ComponentModel;
 using Radical.Avalonia.Input;
 using System.ComponentModel;
+using System.Threading.Tasks;
 
 namespace Radical.Avalonia.Tests.Markup
 {
@@ -42,6 +43,16 @@ namespace Radical.Avalonia.Tests.Markup
                 name = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Name)));
             }
+        }
+
+        public TaskCompletionSource<bool> SaveAsyncGate { get; } = new TaskCompletionSource<bool>();
+
+        public int? SavedAsyncValue { get; private set; }
+
+        public async Task SaveAsync(int value)
+        {
+            await SaveAsyncGate.Task;
+            SavedAsyncValue = value;
         }
 
         [KeyBinding(Key.S, Modifiers = KeyModifiers.Control)]
