@@ -10,7 +10,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
-using System.Linq.Expressions;
 
 namespace Radical.Avalonia.Presentation
 {
@@ -236,8 +235,8 @@ namespace Radical.Avalonia.Presentation
 
             if (IsValid != wasValid)
             {
-                OnPropertyChanged(() => IsValid);
-                OnPropertyChanged(() => HasErrors);
+                OnPropertyChanged(nameof(IsValid));
+                OnPropertyChanged(nameof(HasErrors));
             }
 
             OnValidated();
@@ -298,22 +297,8 @@ namespace Radical.Avalonia.Presentation
         [MementoPropertyMetadata(TrackChanges = false)]
         public string FocusedElementKey
         {
-            get { return GetPropertyValue(() => FocusedElementKey); }
-            set { SetPropertyValue(() => FocusedElementKey, value); }
-        }
-
-        /// <summary>
-        /// Moves the focus to.
-        /// </summary>
-        /// <typeparam name="T">The type of the property.</typeparam>
-        /// <param name="property">The property.</param>
-        [System.Obsolete("This function has been obsoleted and will be removed in v3.0.0. Use MoveFocusTo(nameof(property)) instead")]
-        protected virtual void MoveFocusTo<T>(Expression<Func<T>> property)
-        {
-            EnsureNotDisposed();
-
-            var propertyName = property.GetMemberName();
-            MoveFocusTo(propertyName);
+            get { return GetPropertyValue<string>(nameof(FocusedElementKey)); }
+            set { SetPropertyValue(nameof(FocusedElementKey), value); }
         }
 
         /// <summary>
