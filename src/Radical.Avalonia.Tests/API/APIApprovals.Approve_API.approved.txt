@@ -1053,7 +1053,7 @@ namespace Radical.Avalonia
     public sealed class RadicalApplication
     {
         public void Boot() { }
-        public void Shutdown() { }
+        public System.Threading.Tasks.Task ShutdownAsync() { }
     }
 }
 namespace Radical.Avalonia.Presentation

@@ -5,6 +5,7 @@ using Radical.Reflection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Radical.Avalonia.Bootstrap.Features
 {
@@ -48,8 +49,10 @@ namespace Radical.Avalonia.Bootstrap.Features
 
                         if (handler.ShouldHandle(s, msg))
                         {
-                            handler.Handle(s, msg);
+                            return handler.HandleAsync(s, msg);
                         }
+
+                        return Task.CompletedTask;
                     });
                 });
         }

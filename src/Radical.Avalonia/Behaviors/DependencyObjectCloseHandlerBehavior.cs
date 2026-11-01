@@ -4,6 +4,7 @@ using Radical.Avalonia.ComponentModel;
 using Radical.Avalonia.Messaging;
 using Avalonia;
 using Avalonia.Controls;
+using System.Threading.Tasks;
 
 namespace Radical.Avalonia.Behaviors
 {
@@ -52,6 +53,8 @@ namespace Radical.Avalonia.Behaviors
                         }
                     }
                 }
+
+                return Task.CompletedTask;
             } );
         }
 

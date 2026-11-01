@@ -1,6 +1,7 @@
 ﻿using Radical.ComponentModel.Messaging;
 using Radical.Messaging;
 using Radical.Avalonia.ComponentModel;
+using System.Threading.Tasks;
 
 namespace Radical.Avalonia.Messaging.Handlers
 {
@@ -17,7 +18,7 @@ namespace Radical.Avalonia.Messaging.Handlers
             this.autoMappingHandler = autoMappingHandler;
         }
 
-        public override void Handle(object sender, ViewLoaded message )
+        public override Task HandleAsync(object sender, ViewLoaded message )
         {
             var view = message.View;
             if ( regionService.HoldsRegionManager( view ) )
@@ -37,6 +38,8 @@ namespace Radical.Avalonia.Messaging.Handlers
                     }
                 }
             }
+
+            return Task.CompletedTask;
         }
     }
 }
