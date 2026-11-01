@@ -1,9 +1,10 @@
-using Avalonia.Controls;
+﻿using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Radical.Avalonia.ComponentModel;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Radical.Avalonia.Tests.Markup
 {
@@ -28,6 +29,25 @@ namespace Radical.Avalonia.Tests.Markup
             button.Command.Execute(button.CommandParameter);
 
             Assert.AreEqual(42, viewModel.SavedValue);
+        }
+
+        [AvaloniaTestMethod, TestCategory("Markup")]
+        public async Task AutoCommandBinding_should_await_async_methods_and_disable_the_command_while_running()
+        {
+            var (view, viewModel) = CreateView();
+            var button = view.FindControl<Button>("AsyncButton");
+            var command = (IDelegateCommand)button.Command;
+
+            var execution = command.ExecuteAsync(button.CommandParameter);
+
+            Assert.IsFalse(command.CanExecute(button.CommandParameter));
+            Assert.IsNull(viewModel.SavedAsyncValue);
+
+            viewModel.SaveAsyncGate.SetResult(true);
+            await execution;
+
+            Assert.AreEqual(42, viewModel.SavedAsyncValue);
+            Assert.IsTrue(command.CanExecute(button.CommandParameter));
         }
 
         [AvaloniaTestMethod, TestCategory("Markup")]
